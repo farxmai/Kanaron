@@ -1,0 +1,4 @@
+client/node_modules/
+client/.eslintrc.json
+server/node_modules/
+.vscode/

@@ -1,0 +1,30 @@
+.card-wrapper {
+  width: 200px;
+  height: 250px;
+  margin: 5px;
+  padding: 5px;
+  border-radius: 15px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  box-shadow: 7px 9px 10px -1px rgba(0, 0, 0, 0.57);
+}
+.card-wrapper:hover {
+  box-shadow: 7px 9px 15px 0px rgba(0, 0, 0, 1);
+}
+a {
+  text-decoration: none;
+  color: #343a40;
+}
+a:hover {
+  text-decoration: none;
+  color: #343a40;
+}
+.img-wrapper {
+  max-height: 200px;
+}
+.text-wrapper {
+  text-align: center;
+}

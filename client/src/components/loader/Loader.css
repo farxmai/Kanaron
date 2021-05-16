@@ -1,0 +1,19 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: bisque;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  overflow: hidden !important;
+}
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}

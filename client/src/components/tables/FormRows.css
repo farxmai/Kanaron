@@ -1,0 +1,16 @@
+tr {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.input {
+  height: 20px;
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+}
+
+.pointer {
+  cursor: pointer;
+}

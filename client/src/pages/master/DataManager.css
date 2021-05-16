@@ -1,0 +1,15 @@
+.data-column {
+  width: 33%;
+}
+
+@media screen and (max-width: 768px) {
+  .data-column {
+    width: 50%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .data-column {
+    width: 100%;
+  }
+}

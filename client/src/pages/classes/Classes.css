@@ -1,0 +1,16 @@
+.calss-cards-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.calss-card {
+  width: 100%;
+  background-color: wheat;
+  padding: 2rem;
+  margin: 10px 0;
+  border-radius: 10px;
+  box-shadow: 7px 9px 10px -1px rgba(0, 0, 0, 0.57);
+}
+.calss-card:hover {
+  box-shadow: 7px 9px 15px 0px rgba(0, 0, 0, 1);
+}

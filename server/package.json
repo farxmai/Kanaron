@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "resolvers.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "graphpack",
+    "build": "graphpack build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "graphpack": "^1.0.9"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-graphql": "^0.9.0",
+    "graphql": "^15.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.3"
+  }
+}
