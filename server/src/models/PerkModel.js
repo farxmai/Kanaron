@@ -8,7 +8,7 @@ const PerkSchema = new Schema(
     description: String,
     attributes: Attributes,
     skills: [{ type: Schema.Types.ObjectId, ref: "Skill" }],
-    spells: [{ type: Schema.Types.ObjectId, ref: "Spells" }],
+    spells: [{ type: Schema.Types.ObjectId, ref: "Spell" }],
   },
   { versionKey: false, timestamps: false }
 );

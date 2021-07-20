@@ -9,7 +9,6 @@ const ClassSchema = new Schema(
     description: String,
     attributes: Attributes,
     skills: [{ type: Schema.Types.ObjectId, ref: "Skill" }],
-    perks: [{ type: Schema.Types.ObjectId, ref: "Perks" }],
     spells: [{ type: Schema.Types.ObjectId, ref: "Spells" }],
   },
   { versionKey: false, timestamps: false }

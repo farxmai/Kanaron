@@ -1,7 +1,13 @@
 const classesService = require("../services/ClassesService");
-const racesService = require("../services/RecesService");
+const racesService = require("../services/RacesService");
 const itemService = require("../services/ItemService");
+const currentItemService = require("../services/CurrentItemService");
+
+const materialService = require("../services/MaterialService");
+const qualityService = require("../services/QualityService");
 const skillService = require("../services/SkillService");
+const spellService = require("../services/SpellService");
+const perkService = require("../services/PerkService");
 const charactersService = require("../services/CharacterService");
 const userService = require("../services/UserService");
 
@@ -69,6 +75,24 @@ module.exports = {
     return classesService.deleteClass(param);
   },
 
+  //////////////////CURRENT ITEMS///////////////////
+
+  currentItems: (param = {}) => {
+    return currentItemService.getCurrentItems(param);
+  },
+  currentItem: (param) => {
+    return currentItemService.getCurrentItem(param);
+  },
+  addCurrentItem: (param) => {
+    return currentItemService.saveCurrentItem(param);
+  },
+  updateCurrentItem: (param) => {
+    return currentItemService.updateCurrentItem(param);
+  },
+  removeCurrent: (param) => {
+    return currentItemService.deleteCurrentItem(param);
+  },
+
   //////////////////ITEMS///////////////////
 
   items: (param) => {
@@ -87,6 +111,42 @@ module.exports = {
     return itemService.deleteItem(param);
   },
 
+  //////////////////MATERIALS///////////////////
+
+  materials: (param) => {
+    return materialService.getMaterials(param);
+  },
+  material: (param) => {
+    return materialService.getMaterial(param);
+  },
+  addMaterial: (param) => {
+    return materialService.saveMaterial(param);
+  },
+  updateMaterial: (param) => {
+    return materialService.updateMaterial(param);
+  },
+  removeMaterial: (param) => {
+    return materialService.deleteMaterial(param);
+  },
+
+  //////////////////QUALITY///////////////////
+
+  qualities: (param) => {
+    return qualityService.getQualities(param);
+  },
+  quality: (param) => {
+    return qualityService.getQuality(param);
+  },
+  addQuality: (param) => {
+    return qualityService.saveQuality(param);
+  },
+  updateQuality: (param) => {
+    return qualityService.updateQuality(param);
+  },
+  removeQuality: (param) => {
+    return qualityService.deleteQuality(param);
+  },
+
   ///////////////////SKILLS///////////////////
 
   skills: (param) => {
@@ -103,6 +163,42 @@ module.exports = {
   },
   removeSkill: (param) => {
     return skillService.deleteSkill(param);
+  },
+
+  ///////////////////SPELLS///////////////////
+
+  spells: (param) => {
+    return spellService.getSpells(param);
+  },
+  spell: (param) => {
+    return spellService.getSpell(param);
+  },
+  addSpell: (param) => {
+    return spellService.saveSpell(param);
+  },
+  updateSpell: (param) => {
+    return spellService.updateSpell(param);
+  },
+  removeSpell: (param) => {
+    return spellService.deleteSpell(param);
+  },
+
+  ///////////////////PERKS///////////////////
+
+  perks: (param) => {
+    return perkService.getPerks(param);
+  },
+  perk: (param) => {
+    return perkService.getPerk(param);
+  },
+  addPerk: (param) => {
+    return perkService.savePerk(param);
+  },
+  updatePerk: (param) => {
+    return perkService.updatePerk(param);
+  },
+  removePerk: (param) => {
+    return perkService.deletePerk(param);
   },
 
   ///////////////////CHARACTERS///////////////////

@@ -417,7 +417,7 @@ export const CREATE_CHARACTER_MUTATION = gql`
     $attributes: AttributesMutation
     $race: String!
     $class: String!
-    $skills: [PersonalSkillMutation]
+    $skills: [CharacterSkillMutation]
     $inventory: [InventoryItemMutation]
     $equipment: EquipmentMutation
   ) {
@@ -455,7 +455,7 @@ export const UPDATE_CHARACTER_MUTATION = gql`
     $attributes: AttributesMutation
     $race: String!
     $class: String!
-    $skills: [PersonalSkillMutation]
+    $skills: [CharacterSkillMutation]
     $inventory: [InventoryItemMutation]
     $equipment: EquipmentMutation
   ) {

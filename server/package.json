@@ -4,14 +4,15 @@
   "description": "",
   "main": "resolvers.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "dev": "graphpack",
     "build": "graphpack build"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "graphpack": "^1.0.9"
+    "graphpack": "^1.0.9",
+    "nodemon": "^2.0.7"
   },
   "dependencies": {
     "cors": "^2.8.5",

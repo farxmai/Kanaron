@@ -6,9 +6,7 @@ const SkillSchema = new Schema(
     title: String,
     type: String,
     description: String,
-    cost: Number,
-    perks: [{ type: Schema.Types.ObjectId, ref: "Perks" }],
-    spells: [{ type: Schema.Types.ObjectId, ref: "Spells" }],
+    cost: { type: Schema.Types.Number, default: 0 },
   },
   { versionKey: false, timestamps: false }
 );

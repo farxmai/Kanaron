@@ -21,7 +21,10 @@ exports.getItem = async ({ id }) => {
 
 exports.saveItem = async (query) => {
   try {
-    const newItem = await new Item(query).save();
+    const newItem = await new Item({
+      ...query,
+      typeProperties: query.typeProperties[query.type],
+    }).save();
     return newItem;
   } catch (err) {
     throw Error(err);
