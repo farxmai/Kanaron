@@ -3,6 +3,7 @@ const Attributes = require("./AttributesModel");
 const Schema = mongoose.Schema;
 
 const Weapon = new Schema({
+  itemType: { type: String, default: "Weapon", immutable: true },
   type: { type: String, enum: ["melee", "range", "throwing", "magic"] },
   damageType: {
     type: String,
@@ -28,6 +29,7 @@ const Weapon = new Schema({
 });
 
 const Armor = new Schema({
+  itemType: { type: String, default: "Armor", immutable: true },
   type: {
     type: String,
     enum: [
@@ -46,6 +48,7 @@ const Armor = new Schema({
 });
 
 const Accessor = new Schema({
+  itemType: { type: String, default: "Accessor", immutable: true },
   type: {
     type: String,
     enum: ["amulet", "ring", "talisman", "artefact", "other"],
@@ -54,12 +57,14 @@ const Accessor = new Schema({
 });
 
 const Consumable = new Schema({
+  itemType: { type: String, default: "Consumable", immutable: true },
   type: { type: String, enum: ["potion", "food", "drink", "other"] },
   additionalProperties: Object,
   effect: String,
 });
 
 const Ammo = new Schema({
+  itemType: { type: String, default: "Ammo", immutable: true },
   baseAttack: Number,
   attackRange: Number,
   stackSize: Number,

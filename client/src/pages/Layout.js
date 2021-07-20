@@ -10,7 +10,7 @@ const Layout = ({ children, user, history }) => {
     <div>
       <Header user={user} />
       <main className="content">
-        <div className={isMasterPage || "container"}>{children}</div>
+        <div className={isMasterPage ? "" : "container"}>{children}</div>
       </main>
       <Footer />
     </div>

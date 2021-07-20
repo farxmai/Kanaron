@@ -1,4 +1,11 @@
 import gql from "graphql-tag";
+import {
+  attributes,
+  inventoryItem,
+  perk,
+  skill,
+  spell,
+} from "./QueryConstants";
 
 export const GET_USER_CHARACTERS_QUERY = gql`
   query GetUserCharactersQuery($id: String!) {
@@ -8,11 +15,11 @@ export const GET_USER_CHARACTERS_QUERY = gql`
       lvl
       race {
         id
-        name
+        title
       }
       class {
         id
-        name
+        title
       }
     }
   }
@@ -27,252 +34,59 @@ export const GET_CHARACTER_QUERY = gql`
       description
       imgLink
       lvl
-      coins
-      healthpoints
+      coins {
+        plat
+        gold
+        silv
+        copr
+        iron
+      }
+      hp
+      mp
       mainAttribute
-      attributes {
-        Strength
-        Agility
-        Constitution
-        Perception
-        Intelligence
-        Spirit
-        Charisma
-      }
-      race {
+      attributes { ${attributes} }
+      inventory {
         id
-        name
-        attributes {
-          Strength
-          Agility
-          Constitution
-          Perception
-          Intelligence
-          Spirit
-          Charisma
+        items {
+          ${inventoryItem}
         }
-      }
-      class {
-        id
-        name
-        attributes {
-          Strength
-          Agility
-          Constitution
-          Perception
-          Intelligence
-          Spirit
-          Charisma
+        equip {
+          weapon1{ ${inventoryItem} }
+          weapon2{ ${inventoryItem} }
+          weapon3{ ${inventoryItem} }
+          weapon4{ ${inventoryItem} }
+          armor{ ${inventoryItem} }
+          helmet{ ${inventoryItem} }
+          belt{ ${inventoryItem} }
+          coat{ ${inventoryItem} }
+          bag{ ${inventoryItem} }
+          boots{ ${inventoryItem} }
+          amulet{ ${inventoryItem} }
+          rings{ ${inventoryItem} }
+          pockets{ ${inventoryItem} }
+        }
+        storages {
+          title
+          items {
+            ${inventoryItem}
+          }
         }
       }
       skills {
-        skillLvl
-        skill {
-          id
-          name
-          type
-          description
-          attributes {
-            Strength
-            Agility
-            Constitution
-            Perception
-            Intelligence
-            Spirit
-            Charisma
-          }
-        }
+        skill { ${skill} }
+        lvl
       }
-      inventory {
-        quantity
-        quality
-        known
-        item {
-          id
-          name
-          description
-          type
-          cost
-          material
-          effects
-          attributes {
-            Strength
-            Agility
-            Constitution
-            Perception
-            Intelligence
-            Spirit
-            Charisma
-          }
-          armor {
-            type
-            baseDefense
-            agilityCut
-            specialData
-          }
-          weapon {
-            baseAttack
-            critAttack
-            critHit
-            damageDice
-            specialData
-            recharge
-          }
-        }
+      spells { ${spell} }
+      perks { ${perk} }
+      race {
+        id
+        title
+        attributes { ${attributes} }
       }
-      equipment {
-        weapon1 {
-          quality
-          known
-          item {
-            id
-            name
-            type
-            material
-            effects
-            attributes {
-              Strength
-              Agility
-              Constitution
-              Perception
-              Intelligence
-              Spirit
-              Charisma
-            }
-            weapon {
-              baseAttack
-              critAttack
-              critHit
-              damageDice
-              specialData
-              recharge
-            }
-          }
-        }
-        weapon2 {
-          quality
-          known
-          item {
-            id
-            name
-            type
-            material
-            effects
-            attributes {
-              Strength
-              Agility
-              Constitution
-              Perception
-              Intelligence
-              Spirit
-              Charisma
-            }
-            weapon {
-              baseAttack
-              critAttack
-              critHit
-              damageDice
-              specialData
-              recharge
-            }
-          }
-        }
-        armor {
-          quality
-          known
-          item {
-            id
-            name
-            type
-            material
-            effects
-            attributes {
-              Strength
-              Agility
-              Constitution
-              Perception
-              Intelligence
-              Spirit
-              Charisma
-            }
-            armor {
-              type
-              baseDefense
-              agilityCut
-              specialData
-            }
-          }
-        }
-        helmet {
-          quality
-          known
-          item {
-            id
-            name
-            type
-            material
-            effects
-            attributes {
-              Strength
-              Agility
-              Constitution
-              Perception
-              Intelligence
-              Spirit
-              Charisma
-            }
-            armor {
-              type
-              baseDefense
-              agilityCut
-              specialData
-            }
-          }
-        }
-        necklace {
-          quality
-          known
-          item {
-            id
-            name
-            description
-            type
-            cost
-            material
-            effects
-            attributes {
-              Strength
-              Agility
-              Constitution
-              Perception
-              Intelligence
-              Spirit
-              Charisma
-            }
-          }
-        }
-        rings {
-          quality
-          known
-          item {
-            id
-            name
-            description
-            type
-            cost
-            material
-            effects
-            attributes {
-              Strength
-              Agility
-              Constitution
-              Perception
-              Intelligence
-              Spirit
-              Charisma
-            }
-          }
-        }
+      class {
+        id
+        title
+        attributes { ${attributes} }
       }
     }
   }

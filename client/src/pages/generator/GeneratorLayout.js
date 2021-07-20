@@ -49,6 +49,7 @@ const GeneratorLayout = ({ user, character }) => (
       if (error) return <p>Error :(</p>;
       if (!data.races.length || !data.classes.length)
         return <p>Empty arrays returned</p>;
+      return null;
       return (
         <Generator
           user={user}

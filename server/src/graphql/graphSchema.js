@@ -1,6 +1,4 @@
-var { buildSchema } = require("graphql");
-
-module.exports = buildSchema(`
+module.exports = `
     input AttributesMutation {
         Strength: Int
         Agility: Int
@@ -105,17 +103,24 @@ module.exports = buildSchema(`
     type Query {
         races: [Race]!
         classes: [Class]!
-        items: [Item]!
-        materials: [Material]!
-        qualities: [Quality]!
+        items: [Item]!        
         currentItems: [CurrentItem]!
-        skills: [Skill]!        
+        materials: [Material]!        
+        qualities: [Quality]!
+        skills: [Skill]!   
+        spells: [Spell]!
+        perks: [Perk]!
+        characters(userID: String!): [Character]!
+        character(id: String!): Character!     
         race(id: String!): Race!
         class(id: String!): Class!  
-        item(id: String!): Item! 
-        skill(id: String!): Skill! 
-        characters(userID: String!): [Character]!
-        character(id: String!): Character!        
+        item(id: String!): Item!
+        currentItem(id: String!): CurrentItem!
+        material(id: String!): Material!
+        quality(id: String!): Quality!        
+        skill(id: String!): Skill!
+        spell(id: String!): Spell!
+        perk(id: String!): Perk! 
     }
 
     type Token {
@@ -429,10 +434,7 @@ module.exports = buildSchema(`
         title: String
         type: String
         cost: Int
-        description: String
-        attributes: Attributes
-        perks: [Perk]
-        spells: [Spell]
+        description: String        
     }
 
     type Spell {
@@ -512,16 +514,16 @@ module.exports = buildSchema(`
         id: String
         title: String
         description: String
-        materialType: String
-        materialIndex: Int
+        type: String
+        index: Int
     }
 
     type Quality {
         id: String
         title: String
         description: String
-        qualityType: String
-        qualityIndex: Int
+        type: String
+        index: Int
     }
 
     union TypeProperties = Weapon | Armor | Accessor | Consumable | Ammo
@@ -545,6 +547,7 @@ module.exports = buildSchema(`
     } 
 
     type Weapon {
+        itemType: String
         type: String
         damageType: String
         baseAttack: Int
@@ -557,20 +560,24 @@ module.exports = buildSchema(`
     } 
 
     type Armor {
+        itemType: String
         type: String
         baseDefense: Int
     } 
 
     type Accessor {
+        itemType: String
         type: String
     } 
 
     type Consumable {
+        itemType: String
         type: String
         effect: String
     } 
 
     type Ammo {
+        itemType: String
         baseAttack: Int
         attackRange: Int
         stackSize: Int
@@ -578,7 +585,4 @@ module.exports = buildSchema(`
         damageType: String
         effectType: String
     }
-        
-  
-  
-`);
+`;

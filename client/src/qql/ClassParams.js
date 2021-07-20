@@ -4,7 +4,7 @@ export const GET_ALL_CLASSES_QUERY = gql`
   query {
     classes {
       id
-      name
+      title
       description
     }
   }
@@ -14,7 +14,7 @@ export const GET_CLASS_QUERY = gql`
   query GetClassQuery($id: String!) {
     class(id: $id) {
       id
-      name
+      title
       imgLink
       description
       attributes {
@@ -28,12 +28,12 @@ export const GET_CLASS_QUERY = gql`
       }
       skills {
         id
-        name
+        title
       }
     }
     skills {
       id
-      name
+      title
       description
     }
   }

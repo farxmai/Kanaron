@@ -1,9 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+
 const graphqlHTTP = require("express-graphql");
+const graphqlTools = require("graphql-tools");
 const schema = require("./src/graphql/graphSchema");
-const root = require("./src/graphql/graphRoot");
+const resolvers = require("./src/graphql/graphResolvers");
+
 const app = express();
 const cors = require("cors");
 const port = process.env.SERVER_PORT;
@@ -22,8 +25,10 @@ app.use(cors());
 app.use(
   "/graphql",
   graphqlHTTP({
-    schema: schema,
-    rootValue: root,
+    schema: graphqlTools.makeExecutableSchema({
+      typeDefs: schema,
+      resolvers: resolvers,
+    }),
     graphiql: true,
   })
 );

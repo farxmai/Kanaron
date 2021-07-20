@@ -14,6 +14,7 @@ const CharacterLayout = (props) => {
       {({ loading, error, data }) => {
         if (loading) return <Loader />;
         if (error) return <p>Error :(</p>;
+        return null;
         return edit ? (
           <GeneratorLayout
             character={data.character}

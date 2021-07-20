@@ -8,8 +8,8 @@ const ClassView = ({ data, setEdit }) => (
     <div className="col-12 col-md-8">
       <div className="d-flex flex-row align-items-center justify-content-between">
         <h2>
-          <ClassIcon name={data.name} />
-          {data.name}
+          <ClassIcon name={data.title} />
+          {data.title}
         </h2>
         <EditButton setEdit={setEdit} />
       </div>
@@ -24,7 +24,7 @@ const ClassView = ({ data, setEdit }) => (
           </p>
           <hr />
           {data.skills.map((skill) => (
-            <p>{skill.name} </p>
+            <p>{skill.title}</p>
           ))}
         </div>
       ) : null}
