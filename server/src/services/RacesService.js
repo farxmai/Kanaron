@@ -2,8 +2,10 @@ const Race = require("../models/RaceModel");
 
 exports.getRaces = async () => {
   try {
-    const races = await Race.find({}).populate("skills");
-    return races;
+    return await Race.find({})
+      .populate("skills")
+      .populate("spells")
+      .populate("perks");
   } catch (err) {
     throw Error(err);
   }
@@ -11,8 +13,10 @@ exports.getRaces = async () => {
 
 exports.getRace = async ({ id }) => {
   try {
-    const race = await Race.findOne({ _id: id }).populate("skills");
-    return race;
+    return await Race.findOne({ _id: id })
+      .populate("skills")
+      .populate("spells")
+      .populate("perks");
   } catch (err) {
     throw Error(err);
   }
@@ -20,8 +24,7 @@ exports.getRace = async ({ id }) => {
 
 exports.saveRace = async (query) => {
   try {
-    const newRace = await new Race(query).save();
-    return newRace;
+    return await new Race(query).save();
   } catch (err) {
     throw Error(err);
   }
@@ -29,8 +32,7 @@ exports.saveRace = async (query) => {
 
 exports.updateRace = async (query) => {
   try {
-    const updatedRace = await Race.findOneAndUpdate({ _id: query.id }, query);
-    return updatedRace;
+    return await Race.findOneAndUpdate({ _id: query.id }, query);
   } catch (err) {
     throw Error(err);
   }

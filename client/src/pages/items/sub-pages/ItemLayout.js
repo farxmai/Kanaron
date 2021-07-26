@@ -7,6 +7,8 @@ const ItemLayout = ({ id, component: Component, setEdit }) => (
     {({ loading, error, data }) => {
       if (loading) return <p>Loading...</p>;
       if (error) return <p>Error :(</p>;
+      console.log(data);
+      // return null;
       return <Component data={data.item} setEdit={setEdit} />;
     }}
   </Query>

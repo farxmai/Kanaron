@@ -1,5 +1,5 @@
 import React from "react";
-import ClassIcon from "../../../components/icons/ClassIcons";
+import ClassIcon from "../../../components/icons/ClassesIcons";
 import Attributes from "../../../components/tables/Attributes";
 import { EditButton } from "../../../components/buttons/EditButton";
 
@@ -17,7 +17,7 @@ const ClassView = ({ data, setEdit }) => (
         <b>Описание: </b>
         {data.description}
       </p>
-      {data.skills.length ? (
+      {data.skills?.length ? (
         <div>
           <p>
             <b>Навыки</b>
@@ -25,6 +25,28 @@ const ClassView = ({ data, setEdit }) => (
           <hr />
           {data.skills.map((skill) => (
             <p>{skill.title}</p>
+          ))}
+        </div>
+      ) : null}
+      {data.spells?.length ? (
+        <div>
+          <p>
+            <b>Заклинания</b>
+          </p>
+          <hr />
+          {data.spells.map((spell) => (
+            <p>{spell.title}</p>
+          ))}
+        </div>
+      ) : null}
+      {data.perks?.length ? (
+        <div>
+          <p>
+            <b>Перки</b>
+          </p>
+          <hr />
+          {data.perks.map((perk) => (
+            <p>{perk.title}</p>
           ))}
         </div>
       ) : null}

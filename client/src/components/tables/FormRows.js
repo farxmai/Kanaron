@@ -202,7 +202,7 @@ export const CheckListRow = ({
         </td>
       </tr>
       {open &&
-        array.map((el) => (
+        array?.map((el) => (
           <tr
             className="pointer"
             key={el.id}
@@ -213,7 +213,7 @@ export const CheckListRow = ({
                 : { fontSize: "14px", color: "gray" }
             }
           >
-            <td>{el.name}</td>
+            <td>{el.title}</td>
             <td>{el.description}</td>
           </tr>
         ))}

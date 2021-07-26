@@ -2,8 +2,7 @@ const Spell = require("../models/SpellModel");
 
 exports.getSpells = async () => {
   try {
-    const Spells = await Spell.find({});
-    return Spells;
+    return await Spell.find({});
   } catch (err) {
     throw Error(err);
   }
@@ -11,8 +10,7 @@ exports.getSpells = async () => {
 
 exports.getSpell = async ({ id }) => {
   try {
-    const Spell = await Spell.findOne({ _id: id });
-    return Spell;
+    return await Spell.findOne({ _id: id });
   } catch (err) {
     throw Error(err);
   }
@@ -20,8 +18,7 @@ exports.getSpell = async ({ id }) => {
 
 exports.saveSpell = async (query) => {
   try {
-    const newSpell = await new Spell(query).save();
-    return newSpell;
+    return await new Spell(query).save();
   } catch (err) {
     throw Error(err);
   }
@@ -29,8 +26,7 @@ exports.saveSpell = async (query) => {
 
 exports.updateSpell = async (query) => {
   try {
-    const updatedSpell = await Spell.findOneAndUpdate({ _id: query.id }, query);
-    return updatedSpell;
+    return await Spell.findOneAndUpdate({ _id: query.id }, query);
   } catch (err) {
     throw Error(err);
   }

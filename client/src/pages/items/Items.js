@@ -7,6 +7,7 @@ import { itemTypesTranslate } from "../../components/translate/dictionary";
 const Items = () => (
   <Query query={GET_ALL_ITEMS_QUERY}>
     {({ loading, error, data }) => {
+      console.log(loading, error, data);
       if (loading) return <p>Loading...</p>;
       if (error) return <p>Error :(</p>;
 
@@ -15,6 +16,8 @@ const Items = () => (
         if (!byTypes[el.type]) byTypes[el.type] = [el];
         else byTypes[el.type].push(el);
       });
+
+      console.log(byTypes);
 
       return (
         <div className="d-flex flex-wrap">
@@ -25,7 +28,7 @@ const Items = () => (
               </div>
               {byTypes[eng]?.map((el) => (
                 <li>
-                  <Link to={`items/${el.id}`}>{el.name}</Link>{" "}
+                  <Link to={`item-types/${el.id}`}>{el.title}</Link>{" "}
                 </li>
               ))}
             </ul>

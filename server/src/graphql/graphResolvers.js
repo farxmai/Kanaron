@@ -75,111 +75,111 @@ module.exports = {
   },
   Mutation: {
     ///////////////////USERS_GENERAL///////////////////
-    signup: (param) => {
+    signup: (_, param) => {
       return userService.createUser(param);
     },
-    login: (param) => {
+    login: (_, param) => {
       console.log(param);
       return userService.getToken(param);
     },
     /////////////////RACES//////////////////
-    addRace: (param) => {
+    addRace: (_, param) => {
       return racesService.saveRace(param);
     },
-    updateRace: (param) => {
+    updateRace: (_, param) => {
       return racesService.updateRace(param);
     },
-    removeRace: (param) => {
+    removeRace: (_, param) => {
       return racesService.deleteRace(param);
     },
     /////////////////CLASSES//////////////////
-    addClass: (param) => {
+    addClass: (_, param) => {
       return classesService.saveClass(param);
     },
-    updateClass: (param) => {
+    updateClass: (_, param) => {
       return classesService.updateClass(param);
     },
-    removeClass: (param) => {
+    removeClass: (_, param) => {
       return classesService.deleteClass(param);
     },
     //////////////////CURRENT ITEMS///////////////////
-    addCurrentItem: (param) => {
+    addCurrentItem: (_, param) => {
       return currentItemService.saveCurrentItem(param);
     },
-    updateCurrentItem: (param) => {
+    updateCurrentItem: (_, param) => {
       return currentItemService.updateCurrentItem(param);
     },
-    removeCurrentItem: (param) => {
+    removeCurrentItem: (_, param) => {
       return currentItemService.deleteCurrentItem(param);
     },
     //////////////////ITEMS///////////////////
-    addItem: (param) => {
+    addItem: (_, param) => {
       return itemService.saveItem(param);
     },
-    updateItem: (param) => {
+    updateItem: (_, param) => {
       return itemService.updateItem(param);
     },
-    removeItem: (param) => {
+    removeItem: (_, param) => {
       return itemService.deleteItem(param);
     },
     //////////////////MATERIALS///////////////////
-    addMaterial: (param) => {
+    addMaterial: (_, param) => {
       return materialService.saveMaterial(param);
     },
-    updateMaterial: (param) => {
+    updateMaterial: (_, param) => {
       return materialService.updateMaterial(param);
     },
-    removeMaterial: (param) => {
+    removeMaterial: (_, param) => {
       return materialService.deleteMaterial(param);
     },
     //////////////////QUALITY///////////////////
-    addQuality: (param) => {
+    addQuality: (_, param) => {
       return qualityService.saveQuality(param);
     },
-    updateQuality: (param) => {
+    updateQuality: (_, param) => {
       return qualityService.updateQuality(param);
     },
-    removeQuality: (param) => {
+    removeQuality: (_, param) => {
       return qualityService.deleteQuality(param);
     },
     ///////////////////SKILLS///////////////////
-    addSkill: (param) => {
+    addSkill: (_, param) => {
       return skillService.saveSkill(param);
     },
-    updateSkill: (param) => {
+    updateSkill: (_, param) => {
       return skillService.updateSkill(param);
     },
-    removeSkill: (param) => {
+    removeSkill: (_, param) => {
       return skillService.deleteSkill(param);
     },
     ///////////////////SPELLS///////////////////
-    addSpell: (param) => {
+    addSpell: (_, param) => {
       return spellService.saveSpell(param);
     },
-    updateSpell: (param) => {
+    updateSpell: (_, param) => {
       return spellService.updateSpell(param);
     },
-    removeSpell: (param) => {
+    removeSpell: (_, param) => {
       return spellService.deleteSpell(param);
     },
     ///////////////////PERKS///////////////////
-    addPerk: (param) => {
+    addPerk: (_, param) => {
       return perkService.savePerk(param);
     },
-    updatePerk: (param) => {
+    updatePerk: (_, param) => {
       return perkService.updatePerk(param);
     },
-    removePerk: (param) => {
+    removePerk: (_, param) => {
       return perkService.deletePerk(param);
     },
     ///////////////////CHARACTERS///////////////////
-    addCharacter: (param) => {
+    addCharacter: (_, param) => {
       return charactersService.saveCharacter(param);
     },
-    updateCharacter: (param) => {
+    updateCharacter: (_, param) => {
       return charactersService.updateCharacter(param);
     },
-    removeCharacter: (param) => {
+    removeCharacter: (_, param) => {
       return charactersService.deleteCharacter(param);
     },
   },

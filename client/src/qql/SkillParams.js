@@ -4,7 +4,7 @@ export const GET_ALL_SKILLS_QUERY = gql`
   query {
     skills {
       id
-      name
+      title
       type
     }
   }
@@ -14,18 +14,10 @@ export const GET_SKILL_QUERY = gql`
   query GetSkillQuery($id: String!) {
     skill(id: $id) {
       id
-      name
+      title
       type
       description
-      attributes {
-        Strength
-        Agility
-        Constitution
-        Perception
-        Intelligence
-        Spirit
-        Charisma
-      }
+      cost
     }
   }
 `;
@@ -33,39 +25,39 @@ export const GET_SKILL_QUERY = gql`
 export const UPDATE_SKILL_MUTATION = gql`
   mutation CreateSkillMutation(
     $id: ID!
-    $name: String!
+    $title: String!
     $type: String!
     $description: String!
-    $attributes: AttributesMutation!
+    $cost: Int!
   ) {
     updateSkill(
       id: $id
-      name: $name
+      title: $title
       type: $type
       description: $description
-      attributes: $attributes
+      cost: $cost
     ) {
       id
-      name
+      title
     }
   }
 `;
 
 export const CREATE_SKILL_MUTATION = gql`
   mutation CreateSkillMutation(
-    $name: String!
+    $title: String!
     $type: String!
     $description: String!
-    $attributes: AttributesMutation!
+    $cost: Int!
   ) {
     addSkill(
-      name: $name
+      title: $title
       type: $type
       description: $description
-      attributes: $attributes
+      cost: $cost
     ) {
       id
-      name
+      title
     }
   }
 `;

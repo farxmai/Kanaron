@@ -21,42 +21,21 @@ import {
   CREATE_SKILL_MUTATION,
 } from "../../../qql/SkillParams";
 
-const defAttributes = {
-  Agility: 0,
-  Charisma: 0,
-  Constitution: 0,
-  Intelligence: 0,
-  Perception: 0,
-  Spirit: 0,
-  Strength: 0,
-};
-
 const SkillEdit = ({ data, setEdit }) => {
-  const [name, setName] = useState(data?.name || "");
+  const [title, setTitle] = useState(data?.title || "");
   const [type, setType] = useState(data?.type || "");
+  const [cost, setCost] = useState(data?.cost || 0);
   const [description, setDescription] = useState(data?.description || "");
-  const [withAttributes, setWithAttributes] = useState(false);
-  const [attributes, setAttributes] = useState(
-    data?.attributes || defAttributes
-  );
 
   const history = useHistory();
 
-  const setAttrib = (type, value) =>
-    setAttributes({
-      ...attributes,
-      [type]: value,
-    });
-
   const prepareRequestData = (id) => {
-    const newAttributes = { ...attributes };
-    delete newAttributes["__typename"];
     return {
       id,
-      name,
+      title,
       type,
       description,
-      attributes: newAttributes,
+      cost,
     };
   };
 
@@ -66,7 +45,18 @@ const SkillEdit = ({ data, setEdit }) => {
   }));
 
   const fields = [
-    { label: "Название", component: InputRow, value: name, onChange: setName },
+    {
+      label: "Название",
+      component: InputRow,
+      value: title,
+      onChange: setTitle,
+    },
+    {
+      label: "Общее описание",
+      component: TextAreaRow,
+      value: description,
+      onChange: setDescription,
+    },
     {
       label: "Тип",
       component: RadioGroupRow,
@@ -75,19 +65,12 @@ const SkillEdit = ({ data, setEdit }) => {
       array: skillTypes,
     },
     {
-      label: "Общее описание",
-      component: TextAreaRow,
-      value: description,
-      onChange: setDescription,
+      label: "Очки действий",
+      component: NumberRow,
+      value: cost,
+      onChange: setCost,
     },
   ];
-
-  const attribFields = attributesTranslate.map((el) => ({
-    label: el.ru,
-    component: NumberRow,
-    value: attributes[el.eng],
-    onChange: (val) => setAttrib(el.eng, val),
-  }));
 
   return (
     <Mutation
@@ -122,21 +105,6 @@ const SkillEdit = ({ data, setEdit }) => {
                   />
                 )
               )}
-              <ButtonRow
-                onClick={() => setWithAttributes(!withAttributes)}
-                label="Бонус атрибутов"
-              />
-              {withAttributes &&
-                attribFields.map(
-                  ({ label, component: Component, value, onChange, array }) => (
-                    <Component
-                      label={label}
-                      onChange={onChange}
-                      value={value}
-                      array={array}
-                    />
-                  )
-                )}
               <SubmitRow back={setEdit} />
             </tbody>
           </Table>

@@ -2,8 +2,7 @@ const Skill = require("../models/SkillModel");
 
 exports.getSkills = async () => {
   try {
-    const skills = await Skill.find({});
-    return skills;
+    return await Skill.find({});
   } catch (err) {
     throw Error(err);
   }
@@ -11,8 +10,7 @@ exports.getSkills = async () => {
 
 exports.getSkill = async ({ id }) => {
   try {
-    const skill = await Skill.findOne({ _id: id });
-    return skill;
+    return await Skill.findOne({ _id: id });
   } catch (err) {
     throw Error(err);
   }
@@ -20,8 +18,7 @@ exports.getSkill = async ({ id }) => {
 
 exports.saveSkill = async (query) => {
   try {
-    const newSkill = await new Skill(query).save();
-    return newSkill;
+    return await new Skill(query).save();
   } catch (err) {
     throw Error(err);
   }
@@ -29,8 +26,7 @@ exports.saveSkill = async (query) => {
 
 exports.updateSkill = async (query) => {
   try {
-    const updatedSkill = await Skill.findOneAndUpdate({ _id: query.id }, query);
-    return updatedSkill;
+    return await Skill.findOneAndUpdate({ _id: query.id }, query);
   } catch (err) {
     throw Error(err);
   }

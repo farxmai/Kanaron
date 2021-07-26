@@ -1,44 +1,34 @@
 import gql from "graphql-tag";
+import { attributes, perk, skill, spell } from "./QueryConstants";
 
 export const GET_ALL_RACES_QUERY = gql`
   query {
     races {
       id
-      name
+      title
       imgLink
     }
   }
 `;
 
 export const GET_RACE_QUERY = gql`
-  query GetRaceQuery($id: String!) {
+  query GetRaceQuery($id: String!) {    
+    skills { ${skill} }
+    spells { ${spell} }
+    perks { ${perk} }
     race(id: $id) {
       id
-      name
+      title
       imgLink
       look
       lifeSpan
       description
       height
       culture
-      attributes {
-        Strength
-        Agility
-        Constitution
-        Perception
-        Intelligence
-        Spirit
-        Charisma
-      }
-      skills {
-        id
-        name
-      }
-    }
-    skills {
-      id
-      name
-      description
+      attributes { ${attributes} }
+      perks { id title description }
+      skills { id title description }
+      spells { id title description }
     }
   }
 `;
@@ -46,7 +36,7 @@ export const GET_RACE_QUERY = gql`
 export const UPDATE_RACE_MUTATION = gql`
   mutation CreateRaceMutation(
     $id: ID!
-    $name: String
+    $title: String
     $imgLink: String
     $look: String
     $lifeSpan: Int
@@ -55,10 +45,12 @@ export const UPDATE_RACE_MUTATION = gql`
     $culture: String
     $attributes: AttributesMutation
     $skills: [String]
+    $spells: [String]
+    $perks: [String]
   ) {
     updateRace(
       id: $id
-      name: $name
+      title: $title
       imgLink: $imgLink
       look: $look
       lifeSpan: $lifeSpan
@@ -67,16 +59,18 @@ export const UPDATE_RACE_MUTATION = gql`
       culture: $culture
       attributes: $attributes
       skills: $skills
+      spells: $spells
+      perks: $perks
     ) {
       id
-      name
+      title
     }
   }
 `;
 
 export const CREATE_RACE_MUTATION = gql`
   mutation CreateRaceMutation(
-    $name: String!
+    $title: String!
     $imgLink: String!
     $look: String!
     $lifeSpan: Int!
@@ -85,9 +79,11 @@ export const CREATE_RACE_MUTATION = gql`
     $culture: String!
     $attributes: AttributesMutation!
     $skills: [String]
+    $spells: [String]
+    $perks: [String]
   ) {
     addRace(
-      name: $name
+      title: $title
       imgLink: $imgLink
       look: $look
       lifeSpan: $lifeSpan
@@ -96,9 +92,11 @@ export const CREATE_RACE_MUTATION = gql`
       culture: $culture
       attributes: $attributes
       skills: $skills
+      spells: $spells
+      perks: $perks
     ) {
       id
-      name
+      title
     }
   }
 `;

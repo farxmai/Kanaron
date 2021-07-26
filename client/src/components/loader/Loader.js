@@ -1,4 +1,6 @@
+import { Box } from "@material-ui/core";
 import React from "react";
+import DiceIcon from "../icons/DiceIcon";
 import "./Loader.css";
 
 class Loader extends React.Component {
@@ -12,11 +14,15 @@ class Loader extends React.Component {
 
   render() {
     return (
-      <div className="loader">
-        <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
+      <Box
+        className="loader"
+        sx={{ background: (theme) => theme.palette.primary.main }}
+      >
+        <DiceIcon
+          className="spinner-dice"
+          style={{ width: 100, height: 100 }}
+        />
+      </Box>
     );
   }
 }

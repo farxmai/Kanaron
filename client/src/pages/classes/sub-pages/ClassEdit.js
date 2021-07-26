@@ -28,15 +28,24 @@ const defAttributes = {
   Strength: 0,
 };
 
-const ClassEdit = ({ data, skills, setEdit }) => {
-  const [name, setName] = useState(data?.name || "");
+const ClassEdit = ({
+  data,
+  skills: skillsList,
+  spells: spellsList,
+  perks: perksList,
+  setEdit,
+}) => {
+  const [title, setTitle] = useState(data?.title || "");
   const [imgLink, setImgLink] = useState(data?.imgLink || "");
   const [description, setDescription] = useState(data?.description || "");
-  const [c_skills, setSkills] = useState(data?.skills || []);
+  const [skills, setSkills] = useState(data?.skills || []);
+  const [spells, setSpells] = useState(data?.spells || []);
+  const [perks, setPerks] = useState(data?.perks || []);
+
+  const [withAttributes, setWithAttributes] = useState(false);
   const [attributes, setAttributes] = useState(
     data?.attributes || defAttributes
   );
-  const [withAttributes, setWithAttributes] = useState(false);
 
   const history = useHistory();
 
@@ -46,36 +55,39 @@ const ClassEdit = ({ data, skills, setEdit }) => {
       [type]: value,
     });
 
-  const isInSkillList = (skill) => {
-    const index = c_skills.findIndex((el) => el.id === skill.id);
+  const isInList = (searchArr, value) => {
+    const index = searchArr.findIndex((el) => el.id === value.id);
     if (index === -1) return false;
     return true;
   };
 
-  const handleSetSkill = (skill) => {
-    const index = c_skills.findIndex((el) => el.id === skill.id);
-    const newSkills = [...c_skills];
-    if (index === -1) newSkills.push(skill);
-    else newSkills.splice(index, 1);
-    setSkills(newSkills);
+  const handleSetValue = (searchArr, value, callback) => {
+    const index = searchArr.findIndex((el) => el.id === value.id);
+    console.log(index);
+    const newArr = [...searchArr];
+    if (index === -1) newArr.push(value);
+    else newArr.splice(index, 1);
+    callback(newArr);
   };
 
-  const prepareRequestData = (id) => {
-    const newAttributes = { ...attributes };
-    delete newAttributes["__typename"];
-    const newSkills = c_skills.map((skill) => skill.id);
-    return {
-      id,
-      name,
-      imgLink,
-      description,
-      attributes: newAttributes,
-      skills: newSkills,
-    };
-  };
+  const prepareRequestData = (id) => ({
+    id,
+    title,
+    imgLink,
+    description,
+    attributes,
+    skills: skills.map((skill) => skill.id),
+    spells: spells.map((spell) => spell.id),
+    perks: perks.map((perk) => perk.id),
+  });
 
   const fields = [
-    { label: "Название", component: InputRow, value: name, onChange: setName },
+    {
+      label: "Название",
+      component: InputRow,
+      value: title,
+      onChange: setTitle,
+    },
     {
       label: "Изображение",
       component: InputRow,
@@ -89,11 +101,25 @@ const ClassEdit = ({ data, skills, setEdit }) => {
       onChange: setDescription,
     },
     {
-      label: "Стартовые навыки",
+      label: "Бонусные навыки",
       component: CheckListRow,
-      onChange: handleSetSkill,
-      array: skills,
-      isInArray: isInSkillList,
+      array: skillsList,
+      onChange: (val) => handleSetValue(skills, val, setSkills),
+      isInArray: (val) => isInList(skills, val),
+    },
+    {
+      label: "Бонусные заклинания",
+      component: CheckListRow,
+      array: spellsList,
+      onChange: (val) => handleSetValue(spells, val, setSpells),
+      isInArray: (val) => isInList(spells, val),
+    },
+    {
+      label: "Бонусные перки",
+      component: CheckListRow,
+      array: perksList,
+      onChange: (val) => handleSetValue(perks, val, setPerks),
+      isInArray: (val) => isInList(perks, val),
     },
   ];
 
@@ -108,7 +134,11 @@ const ClassEdit = ({ data, skills, setEdit }) => {
     <Mutation
       mutation={data?.id ? UPDATE_CLASS_MUTATION : CREATE_CLASS_MUTATION}
       variables={prepareRequestData(data?.id)}
-      onCompleted={(res) => history.push(`/classes/${res.addClass.id}`)}
+      onCompleted={(res) =>
+        res?.addClass?.id
+          ? history.push(`/classes/${res.addClass.id}`)
+          : window.location.reload()
+      }
       onError={(err) => console.log(err)}
     >
       {(mutation) => (

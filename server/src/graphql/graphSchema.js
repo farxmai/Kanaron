@@ -257,13 +257,15 @@ module.exports = `
         removeItem(id: ID!): Item!
 
         addCurrentItem(
-            item: String
+            title: String
+            item: String!
             material: String
             quality: String
         ) : CurrentItem!
         updateCurrentItem(
             id: String
-            item: String
+            title: String
+            item: String!
             material: String
             quality: String
         ): CurrentItem!
@@ -408,6 +410,8 @@ module.exports = `
         culture: String
         attributes: Attributes
         skills: [Skill]
+        spells: [Spell]
+        perks: [Perk]
     }
 
     type Class {
@@ -417,6 +421,8 @@ module.exports = `
         description: String
         attributes: Attributes
         skills: [Skill]
+        spells: [Spell]
+        perks: [Perk]
     }
 
     type Attributes {
@@ -505,6 +511,7 @@ module.exports = `
 
     type CurrentItem {
         id: String
+        title: String
         item: Item
         material: Material
         quality: Quality

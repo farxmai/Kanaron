@@ -88,58 +88,114 @@ export const ArmorStats = ({ armor }) => (
   </Table>
 );
 
-export const ItemMainInfo = ({ data, setEdit }) => (
-  <Table striped>
-    <tbody>
-      <tr>
-        <td colSpan="2" align="center">
-          <div className="d-flex flex-row align-items-center justify-content-between">
-            <h4>{data.name}</h4>
-            <EditButton setEdit={setEdit} />
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <b>Тип прeдмета</b>
-        </td>
-        <td align="right">{getItemTypesTranslate(data.type)}</td>
-      </tr>
-      <tr>
-        <td>
-          <b>Стоимость</b>
-        </td>
-        <td align="right">{data.cost} жм</td>
-      </tr>
-      <tr>
-        <td>
-          <b>Материал</b>
-        </td>
-        <td align="right">{data.material}</td>
-      </tr>
-      <tr>
-        <td colSpan="2">
-          <b>Описание</b>
-        </td>
-      </tr>
-      <tr>
-        <td colSpan="2">
-          <i>{data.description}</i>
-        </td>
-      </tr>
-      <tr>
-        <td colSpan="2">
-          <b>Свойства</b>
-        </td>
-      </tr>
-      <tr>
-        <td colSpan="2">
-          <i>{data.effects}</i>
-        </td>
-      </tr>
-    </tbody>
-  </Table>
-);
+export const ItemMainInfo = ({ data, setEdit }) => {
+  const fields = [
+    { type: "oneRow", label: "Тип прeдмета", value: data.type },
+    { type: "oneRow", label: "Базовая стоимость", value: data.cost },
+    { type: "oneRow", label: "Базовый вес", value: data.weight },
+    { type: "oneRow", label: "Бонус очков здоровья", value: data.hpBonus },
+    { type: "oneRow", label: "Бонус очков маны", value: data.mpBonus },
+    { type: "multiRow", label: "Описание", value: data.description },
+    { type: "multiRow", label: "Свойства", value: data.effects },
+    {
+      type: "listRow",
+      label: "Бонусные перки",
+      value: data.perks.map((el) => el.title),
+    },
+    {
+      type: "listRow",
+      label: "Бонусные навыки",
+      value: data.skills.map((el) => el.title),
+    },
+    {
+      type: "listRow",
+      label: "Бонусные заклинания",
+      value: data.spells.map((el) => el.title),
+    },
+    {
+      type: "listRow",
+      label: "Бонусные атрибуты",
+      value: data.attributes
+        ? Object.keys(data.attributes).map(
+            (el) => `${el}: ${data.attributes[el]}`
+          )
+        : null,
+    },
+  ];
+
+  const getRowFromType = (type, label, value) => {
+    switch (type) {
+      case "oneRow":
+        return (
+          <tr>
+            <td>
+              <b>{label}</b>
+            </td>
+            <td align="right">{value}</td>
+          </tr>
+        );
+      case "multiRow":
+        return (
+          <>
+            <tr>
+              <td colSpan="2">
+                <b>{label}</b>
+              </td>
+            </tr>
+            <tr>
+              <td colSpan="2">
+                <i>{value}</i>
+              </td>
+            </tr>
+          </>
+        );
+      case "listRow":
+        return (
+          value.length > 0 && (
+            <>
+              <tr>
+                <td colSpan="2">
+                  <b>{label}</b>
+                </td>
+              </tr>
+              <tr>
+                <td colSpan="2">
+                  <i>
+                    {value.map((el) => (
+                      <>
+                        - {el}
+                        <br />
+                      </>
+                    ))}
+                  </i>
+                </td>
+              </tr>
+            </>
+          )
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <Table striped>
+      <tbody>
+        <tr>
+          <td colSpan="2" align="center">
+            <div className="d-flex flex-row align-items-center justify-content-between">
+              <h4>{data.title}</h4>
+              <EditButton setEdit={setEdit} />
+            </div>
+          </td>
+        </tr>
+        {fields.map(({ type, label, value }) =>
+          value ? getRowFromType(type, label, value) : null
+        )}
+      </tbody>
+    </Table>
+  );
+};
 
 export const ItemImage = ({ url }) => (
   <Table striped>

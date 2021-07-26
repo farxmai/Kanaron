@@ -7,9 +7,8 @@ const ClassLayout = ({ id, component: Component, setEdit }) => (
     {({ loading, error, data }) => {
       if (loading) return <p>Loading...</p>;
       if (error) return <p>Error :(</p>;
-      return (
-        <Component data={data.class} skills={data.skills} setEdit={setEdit} />
-      );
+      const { class: cls, ...rest } = data;
+      return <Component data={cls} {...rest} setEdit={setEdit} />;
     }}
   </Query>
 );

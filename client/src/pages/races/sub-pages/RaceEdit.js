@@ -28,15 +28,23 @@ const defAttributes = {
   Strength: 5,
 };
 
-const RaceEdit = ({ data, skills, setEdit }) => {
-  const [name, setName] = useState(data?.name || "");
+const RaceEdit = ({
+  race: data,
+  skills: skillsList,
+  spells: spellsList,
+  perks: perksList,
+  setEdit,
+}) => {
+  const [title, setTitle] = useState(data?.title || "");
   const [height, setHeight] = useState(data?.height || "");
   const [imgLink, setImgLink] = useState(data?.imgLink || "");
   const [lifeSpan, setLifeSpan] = useState(data?.lifeSpan || "");
   const [culture, setCulture] = useState(data?.culture || "");
   const [description, setDescription] = useState(data?.description || "");
   const [look, setLook] = useState(data?.look || "");
-  const [c_skills, setSkills] = useState(data?.skills || []);
+  const [skills, setSkills] = useState(data?.skills || []);
+  const [spells, setSpells] = useState(data?.spells || []);
+  const [perks, setPerks] = useState(data?.perks || []);
   const [attributes, setAttributes] = useState(
     data?.attributes || defAttributes
   );
@@ -50,37 +58,35 @@ const RaceEdit = ({ data, skills, setEdit }) => {
       [type]: value,
     });
 
-  const isInSkillList = (skill) => {
-    const index = c_skills.findIndex((el) => el.id === skill.id);
+  const isInList = (searchArr, value) => {
+    const index = searchArr.findIndex((el) => el.id === value.id);
     if (index === -1) return false;
     return true;
   };
 
-  const handleSetSkill = (skill) => {
-    const index = c_skills.findIndex((el) => el.id === skill.id);
-    const newSkills = [...c_skills];
-    if (index === -1) newSkills.push(skill);
-    else newSkills.splice(index, 1);
-    setSkills(newSkills);
+  const handleSetValue = (searchArr, value, callback) => {
+    const index = searchArr.findIndex((el) => el.id === value.id);
+    console.log(index);
+    const newArr = [...searchArr];
+    if (index === -1) newArr.push(value);
+    else newArr.splice(index, 1);
+    callback(newArr);
   };
 
-  const prepareRequestData = (id) => {
-    const newAttributes = { ...attributes };
-    delete newAttributes["__typename"];
-    const newSkills = c_skills.map((skill) => skill.id);
-    return {
-      id,
-      name,
-      imgLink,
-      culture,
-      description,
-      look,
-      height,
-      lifeSpan,
-      skills: newSkills,
-      attributes: newAttributes,
-    };
-  };
+  const prepareRequestData = (id) => ({
+    id,
+    title,
+    imgLink,
+    culture,
+    description,
+    look,
+    height,
+    lifeSpan,
+    attributes,
+    skills: skills.map((skill) => skill.id),
+    spells: spells.map((spell) => spell.id),
+    perks: perks.map((perk) => perk.id),
+  });
 
   const attribFields = attributesTranslate.map((el) => ({
     label: el.ru,
@@ -90,7 +96,12 @@ const RaceEdit = ({ data, skills, setEdit }) => {
   }));
 
   const fields = [
-    { label: "Название", component: InputRow, value: name, onChange: setName },
+    {
+      label: "Название",
+      component: InputRow,
+      value: title,
+      onChange: setTitle,
+    },
     {
       label: "Изображение",
       component: InputRow,
@@ -123,11 +134,25 @@ const RaceEdit = ({ data, skills, setEdit }) => {
       onChange: setCulture,
     },
     {
-      label: "Стартовые навыки",
+      label: "Бонусные навыки",
       component: CheckListRow,
-      onChange: handleSetSkill,
-      array: skills,
-      isInArray: isInSkillList,
+      array: skillsList,
+      onChange: (val) => handleSetValue(skills, val, setSkills),
+      isInArray: (val) => isInList(skills, val),
+    },
+    {
+      label: "Бонусные заклинания",
+      component: CheckListRow,
+      array: spellsList,
+      onChange: (val) => handleSetValue(spells, val, setSpells),
+      isInArray: (val) => isInList(spells, val),
+    },
+    {
+      label: "Бонусные перки",
+      component: CheckListRow,
+      array: perksList,
+      onChange: (val) => handleSetValue(perks, val, setPerks),
+      isInArray: (val) => isInList(perks, val),
     },
   ];
 

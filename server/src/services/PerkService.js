@@ -2,8 +2,7 @@ const Perk = require("../models/PerkModel");
 
 exports.getPerks = async () => {
   try {
-    const Perks = await Perk.find({});
-    return Perks;
+    return await Perk.find({}).populate("skills").populate("spells");
   } catch (err) {
     throw Error(err);
   }
@@ -11,8 +10,9 @@ exports.getPerks = async () => {
 
 exports.getPerk = async ({ id }) => {
   try {
-    const Perk = await Perk.findOne({ _id: id });
-    return Perk;
+    return await Perk.findOne({ _id: id })
+      .populate("skills")
+      .populate("spells");
   } catch (err) {
     throw Error(err);
   }
@@ -20,8 +20,7 @@ exports.getPerk = async ({ id }) => {
 
 exports.savePerk = async (query) => {
   try {
-    const newPerk = await new Perk(query).save();
-    return newPerk;
+    return await new Perk(query).save();
   } catch (err) {
     throw Error(err);
   }
@@ -29,8 +28,7 @@ exports.savePerk = async (query) => {
 
 exports.updatePerk = async (query) => {
   try {
-    const updatedPerk = await Perk.findOneAndUpdate({ _id: query.id }, query);
-    return updatedPerk;
+    return await Perk.findOneAndUpdate({ _id: query.id }, query);
   } catch (err) {
     throw Error(err);
   }

@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 export const attributesTranslate = [
   { eng: "Strength", ru: "Сила" },
   { eng: "Agility", ru: "Ловкость" },
@@ -38,6 +37,15 @@ export const getItemTypesTranslate = (eng) => {
 export const skillTypesTranslate = [
   { eng: "active", ru: "Активыный" },
   { eng: "passive", ru: "Пассивный" },
+  { eng: "curse", ru: "Проклятье" },
+  { eng: "blessing", ru: "Благословение" },
+  { eng: "other", ru: "Другое" },
+];
+
+export const spellTypesTranslate = [
+  { eng: "active", ru: "Активыный" },
+  { eng: "passive", ru: "Пассивный" },
+  { eng: "trick", ru: "Трюк" },
   { eng: "curse", ru: "Проклятье" },
   { eng: "blessing", ru: "Благословение" },
   { eng: "other", ru: "Другое" },

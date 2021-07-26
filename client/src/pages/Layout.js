@@ -1,20 +1,7 @@
-import React from "react";
-import { withRouter } from "react-router";
-import Header from "../components/header/Header";
-import Footer from "../components/footer/Footer";
+import MainLayout from "../components/layouts/MainLayout";
 
-const Layout = ({ children, user, history }) => {
-  const path = history.location.pathname;
-  const isMasterPage = path.indexOf("master") !== -1;
-  return (
-    <div>
-      <Header user={user} />
-      <main className="content">
-        <div className={isMasterPage ? "" : "container"}>{children}</div>
-      </main>
-      <Footer />
-    </div>
-  );
+const Layout = ({ children, user }) => {
+  return <MainLayout user={user}>{children}</MainLayout>;
 };
 
-export default withRouter(Layout);
+export default Layout;

@@ -1,67 +1,66 @@
 import React from "react";
-import { ALTER_IMG } from "../../../constants";
 import { EditButton } from "../../../components/buttons/EditButton";
-import Attributes from "../../../components/tables/Attributes";
-import "../Race.css";
 
-const RaceView = ({ data, setEdit }) => (
-  <div className="race-wrapper">
-    <div className="d-flex flex-column flex-md-row">
-      <div className="col-12 col-md-4">
-        <div className="race-img-wrapper">
-          <img
-            className="race-img"
-            src={data.imgLink || ALTER_IMG}
-            alt={data.name}
-            title={data.name}
-          />
-        </div>
-        <div>
+import { Card, Grid, Hidden, Typography } from "@material-ui/core";
+import { FlexBetween } from "../../../components/directions/directions";
+
+import TextCard from "../../../components/elements/TextCard";
+import InfoBox from "../../../components/elements/InfoCard";
+import ImageCard from "../../../components/elements/ImageCard";
+import Attributes from "../../../components/tables/Attributes";
+
+const RaceView = ({ race: data, setEdit }) => {
+  const info = [
+    {
+      label: "Средний рост",
+      value: data.height ? `${data.height} см` : null,
+    },
+    {
+      label: "Продолжительность жизни",
+      value: data.lifeSpan ? `${data.lifeSpan} лет` : null,
+    },
+  ];
+
+  const cards = [
+    { label: "Общие сведенья", value: data.description },
+    { label: "Культура и быт", value: data.description },
+    { label: "Бонусные навыки", value: data.skills, listOf: "skills" },
+    { label: "Бонусные заклинания", value: data.spells, listOf: "spells" },
+    { label: "Бонусные перки", value: data.perks, listOf: "perks" },
+  ];
+
+  return (
+    <Card
+      sx={{ background: (theme) => theme.palette.background.neutral, p: 2 }}
+    >
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={4}>
+          {console.log(data)}
+          <Hidden smUp>
+            <FlexBetween sx={{ mb: 1 }}>
+              <Typography variant="h2">{data.title}</Typography>
+              <EditButton setEdit={setEdit} />
+            </FlexBetween>
+          </Hidden>
+          <ImageCard id={data.id} title={data.title} src={data.imgLink} />
+          <InfoBox list={info} />
           <Attributes attributes={data.attributes} />
-        </div>
-      </div>
-      <div className="col-12 col-md-8">
-        <div className="d-flex flex-row align-items-center justify-content-between">
-          <h2>{data.name}</h2>
-          <EditButton setEdit={setEdit} />
-        </div>
-        <div>
-          <p>
-            <b>Средний рост: </b>
-            {data.height}
-          </p>
-          <p>
-            <b>Средняя продолжительность жизни: </b>
-            {data.lifeSpan}
-          </p>
-        </div>
-        <div>
-          <h3>Внешность</h3>
-          <hr />
-          <p>{data.look}</p>
-        </div>
-        <div>
-          <h3>Общие сведенья</h3>
-          <hr />
-          <p>{data.description}</p>
-        </div>
-        <div>
-          <h3>Культура</h3>
-          <hr />
-          <p>{data.culture}</p>
-        </div>
-        {data.skills.length ? (
-          <div>
-            <h3>Навыки</h3>
-            <hr />
-            {data.skills.map((skill) => (
-              <p>{skill.name} </p>
-            ))}
-          </div>
-        ) : null}
-      </div>
-    </div>
-  </div>
-);
+        </Grid>
+        <Grid item xs={12} sm={8}>
+          <Hidden smDown>
+            <FlexBetween sx={{ mb: 1 }}>
+              <Typography variant="h2">{data.title}</Typography>
+              <EditButton setEdit={setEdit} />
+            </FlexBetween>
+          </Hidden>
+
+          {cards.map(({ label, value, listOf }) => (
+            <TextCard label={label} value={value} listOf={listOf} />
+          ))}
+        </Grid>
+      </Grid>
+    </Card>
+  );
+};
 
 export default RaceView;

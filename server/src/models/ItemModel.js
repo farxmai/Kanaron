@@ -101,8 +101,8 @@ const ItemSchema = new Schema(
     hpBonus: { type: Number, default: 0 },
     mpBonus: { type: Number, default: 0 },
     skills: [{ type: Schema.Types.ObjectId, ref: "Skill" }],
-    perks: [{ type: Schema.Types.ObjectId, ref: "Perks" }],
-    spells: [{ type: Schema.Types.ObjectId, ref: "Spells" }],
+    perks: [{ type: Schema.Types.ObjectId, ref: "Perk" }],
+    spells: [{ type: Schema.Types.ObjectId, ref: "Spell" }],
     attributes: Attributes,
   },
   { versionKey: false, timestamps: false }

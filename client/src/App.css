@@ -1,45 +1,6 @@
-.App {
-  text-align: center;
-}
-.content {
+body {
+  font-family: "Philosopher";
   background-image: url("./img/wood_texture.jpg");
-  margin-top: 70px;
   background-size: initial;
   background-attachment: fixed;
-  width: 100%;
-  min-height: calc(100vh - 130px);
-  font-family: Candara;
-  color: #343a40;
-  padding: 1rem;
 }
-.container {
-  max-width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 5px;
-  background-color: bisque;
-  min-height: calc(100vh - 165px);
-  background-size: cover;
-  padding: 2rem;
-}
-
-@media screen and (max-width: 768px) {
-  .content {
-    padding: 0.5rem;
-    min-height: calc(100vh - 158px);
-  }
-  .container {
-    min-height: calc(100vh - 175px);
-    padding: 0.5rem;
-    max-width: 100%;
-  }
-}
-
-@media screen and (max-width: 375px) {
-  .content {
-    min-height: calc(100vh - 170px);
-  }
-  .container {
-    min-height: calc(100vh - 170px);
-  }
-} ;

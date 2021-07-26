@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Query } from "react-apollo";
-import ClassIcon from "../../components/icons/ClassIcons";
+import ClassIcon from "../../components/icons/ClassesIcons";
 import "./Classes.css";
 import { GET_ALL_CLASSES_QUERY } from "../../qql/ClassParams";
 
@@ -17,7 +17,7 @@ const Classes = () => (
               <Link to={`classes/${a.id}`}>
                 <h3>
                   <ClassIcon id={i + 1} fullWidth={50} title={a.name} />
-                  <b>{a.name}</b>
+                  <b>{a.title}</b>
                 </h3>
               </Link>
               <p>{a.description}</p>

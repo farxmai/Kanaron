@@ -1,9 +1,16 @@
-import React, { Component } from "react";
-import { Button } from "react-bootstrap";
+import React, { Component, useState } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { userLogIn } from "../../services/authHandlers";
 import "./Login.css";
+import {
+  Box,
+  Button,
+  Card,
+  TextField,
+  Typography,
+  withStyles,
+} from "@material-ui/core";
 
 const SIGNUP_MUTATION = gql`
   mutation SignupMutation($login: String!, $password: String!) {
@@ -23,63 +30,97 @@ const LOGIN_MUTATION = gql`
   }
 `;
 
-class Login extends Component {
-  state = {
+const CssTextField = withStyles((theme) => ({
+  root: {
+    "& label.Mui-focused": {
+      color: theme.palette.secondary.main,
+    },
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: theme.palette.secondary.main,
+      },
+    },
+  },
+}))(TextField);
+
+const Login = () => {
+  const [values, setValues] = useState({
     isLogin: true,
     login: "",
     password: "",
-  };
+  });
 
-  confirm = async (data) => {
-    const { token } = this.state.isLogin ? data.login : data.signup;
+  const { isLogin, login, password } = values;
+
+  const setValue = (field, value) =>
+    setValues({
+      ...values,
+      [field]: value,
+    });
+
+  const confirm = async (data) => {
+    const { token } = isLogin ? data.login : data.signup;
     if (!token) return console.log("Error");
     userLogIn(token);
   };
 
-  render() {
-    const { isLogin, login, password } = this.state;
-    return (
-      <Mutation
-        mutation={isLogin ? LOGIN_MUTATION : SIGNUP_MUTATION}
-        variables={{ login, password }}
-        onCompleted={(data) => this.confirm(data)}
-        onError={(err) => console.log(err)}
-      >
-        {(mutation) => (
-          <div className="wrapper">
+  return (
+    <Mutation
+      mutation={isLogin ? LOGIN_MUTATION : SIGNUP_MUTATION}
+      variables={{ login, password }}
+      onCompleted={(data) => confirm(data)}
+      onError={(err) => console.log({ err: err.message })}
+    >
+      {(mutation) => (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
+        >
+          <Card
+            sx={{
+              maxWidth: 300,
+              p: 2,
+            }}
+          >
             <form
-              className="form"
               onSubmit={(e) => {
                 e.preventDefault();
                 mutation();
               }}
             >
-              <h4>{isLogin ? "Вход" : "Регистрация"}</h4>
+              <Typography variant="h4">
+                {isLogin ? "Вход" : "Регистрация"}
+              </Typography>
               <div className="d-flex flex-column">
-                <input
+                <CssTextField
                   value={login}
-                  onChange={(e) => this.setState({ login: e.target.value })}
+                  onChange={(e) => setValue("login", e.target.value)}
                   type="text"
-                  placeholder="login"
-                  className="mt-2"
+                  sx={{ mt: 1 }}
+                  label="Логин"
                 />
-                <input
+                <CssTextField
                   value={password}
-                  onChange={(e) => this.setState({ password: e.target.value })}
+                  // disabled
+                  onChange={(e) => setValue("password", e.target.value)}
                   type="password"
-                  placeholder="password"
-                  className="mt-2"
+                  label="Пароль"
+                  sx={{ mt: 1 }}
                 />
               </div>
               <div className="d-flex flex-column">
-                <Button className="mt-2" size="md" variant="dark" type="submit">
+                <Button sx={{ mt: 1 }} variant="contained" type="submit">
                   {isLogin ? "Войти" : "Создать аккаунт"}
                 </Button>
                 <Button
-                  className="mt-2"
-                  size="sm"
-                  variant="outline-dark"
-                  onClick={() => this.setState({ isLogin: !isLogin })}
+                  sx={{ mt: 1 }}
+                  variant="outlined"
+                  color="secondary"
+                  onClick={(e) => setValue("isLogin", !isLogin)}
                 >
                   {isLogin
                     ? "Вы еще не зарегестрированы?"
@@ -87,10 +128,10 @@ class Login extends Component {
                 </Button>
               </div>
             </form>
-          </div>
-        )}
-      </Mutation>
-    );
-  }
-}
+          </Card>
+        </Box>
+      )}
+    </Mutation>
+  );
+};
 export default Login;

@@ -1,10 +1,11 @@
 const Item = require("../models/ItemModel");
 
-exports.getItems = async (query) => {
+exports.getItems = async () => {
   try {
-    const param = query ? query : {};
-    const items = await Item.find(param);
-    return items;
+    return await Item.find({})
+      .populate("skills")
+      .populate("spells")
+      .populate("perks");
   } catch (err) {
     throw Error(err);
   }
@@ -12,8 +13,10 @@ exports.getItems = async (query) => {
 
 exports.getItem = async ({ id }) => {
   try {
-    const item = await Item.findOne({ _id: id });
-    return item;
+    return await Item.findOne({ _id: id })
+      .populate("skills")
+      .populate("spells")
+      .populate("perks");
   } catch (err) {
     throw Error(err);
   }
@@ -21,11 +24,10 @@ exports.getItem = async ({ id }) => {
 
 exports.saveItem = async (query) => {
   try {
-    const newItem = await new Item({
+    return await new Item({
       ...query,
       typeProperties: query.typeProperties[query.type],
     }).save();
-    return newItem;
   } catch (err) {
     throw Error(err);
   }
@@ -33,8 +35,7 @@ exports.saveItem = async (query) => {
 
 exports.updateItem = async (query) => {
   try {
-    const updatedItem = await Item.findOneAndUpdate({ _id: query.id }, query);
-    return updatedItem;
+    return await Item.findOneAndUpdate({ _id: query.id }, query);
   } catch (err) {
     throw Error(err);
   }

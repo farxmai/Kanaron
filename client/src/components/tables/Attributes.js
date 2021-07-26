@@ -1,5 +1,15 @@
+import {
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+} from "@material-ui/core";
 import React from "react";
-import { Table } from "react-bootstrap";
 import { attributesTranslate } from "../translate/dictionary";
 
 export default function Attributes({
@@ -15,36 +25,56 @@ export default function Attributes({
     selfAttributes &&
     Object.values(selfAttributes).reduce((acc, value) => acc + value, 0);
   const isInLimit = points < limit;
+  const rows = attributesTranslate;
+
   return (
-    <Table striped hover variant={variant}>
-      <tbody>
-        <tr>
-          <td colSpan="8" align="center">
-            {`Атрибуты ${isEdit ? `${points}/${limit}` : ""}`}
-          </td>
-        </tr>
-        {attributesTranslate.map((field) => (
-          <tr>
-            <td>{field.ru}</td>
-            <td width={40} align="center">
-              {getAttribute ? getAttribute(field.eng) : attributes[field.eng]}
-            </td>
-            {isEdit && (
-              <td>
-                <input
-                  type="number"
-                  m
-                  max={isInLimit ? 20 : selfAttributes[field.eng]}
-                  min={0}
-                  style={{ height: "20px", width: "40px", textAlign: "right" }}
-                  onChange={(e) => setValue(field.eng, +e.target.value)}
-                  value={selfAttributes[field.eng]}
-                />
-              </td>
-            )}
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+    <TableContainer
+      component={Card}
+      sx={{
+        mt: 1,
+        p: 2,
+        borderRadius: "10px",
+        border: `1px solid`,
+        borderColor: (theme) => theme.palette.secondary.main,
+      }}
+    >
+      <Table padding="none" size="small" paddingNone>
+        <TableHead>
+          <TableRow>
+            <TableCell align="center" colSpan="8">
+              <Typography>
+                {`Атрибуты ${isEdit ? `${points}/${limit}` : ""}`}
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow sx={{ py: 1 }}>
+              <TableCell>{row.ru}</TableCell>
+              <TableCell width={40} align="center">
+                {getAttribute ? getAttribute(row.eng) : attributes[row.eng]}
+              </TableCell>
+              {isEdit && (
+                <TableCell>
+                  <TextField
+                    type="number"
+                    max={isInLimit ? 20 : selfAttributes[row.eng]}
+                    min={0}
+                    sx={{
+                      height: "20px",
+                      width: "40px",
+                      textAlign: "right",
+                    }}
+                    onChange={(e) => setValue(row.eng, +e.target.value)}
+                    value={selfAttributes[row.eng]}
+                  />
+                </TableCell>
+              )}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

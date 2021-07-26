@@ -1,10 +1,12 @@
 import gql from "graphql-tag";
+import { itemType } from "./QueryConstants";
 
 export const GET_ALL_ITEMS_QUERY = gql`
   query {
     items {
       id
-      name
+      title
+      description
       type
     }
   }
@@ -12,102 +14,101 @@ export const GET_ALL_ITEMS_QUERY = gql`
 
 export const GET_ITEM_QUERY = gql`
   query GetItemQuery($id: String!) {
-    item(id: $id) {
+    perks {
       id
-      name
-      type
+      title
       description
-      cost
-      material
-      imgLink
-      effects
-      armor {
-        baseDefense
-        agilityCut
-        type
-        specialData
-      }
-      weapon {
-        baseAttack
-        critAttack
-        critHit
-        damageDice
-        specialData
-        recharge
-      }
-      attributes {
-        Strength
-        Agility
-        Constitution
-        Perception
-        Intelligence
-        Spirit
-        Charisma
-      }
     }
+    skills {
+      id
+      title
+      description
+    }
+    spells {
+      id
+      title
+      description
+    }
+    item(id: $id) { ${itemType} }
   }
 `;
 
 export const UPDATE_ITEM_MUTATION = gql`
   mutation CreateItemMutation(
     $id: ID!
-    $name: String!
-    $type: String!
-    $description: String!
-    $cost: Int
-    $material: String
+    $title: String
+    $description: String
     $effects: String
     $imgLink: String
-    $armor: ArmorMutation
-    $weapon: WeaponMutation
+    $cost: Int
+    $weight: Int
+    $type: String
+    $typeProperties: TypePropertiesMutation
+    $hpBonus: Int
+    $mpBonus: Int
+    $skills: [String]
+    $perks: [String]
+    $spells: [String]
     $attributes: AttributesMutation
   ) {
     updateItem(
       id: $id
-      name: $name
-      type: $type
+      title: $title
       description: $description
-      cost: $cost
-      material: $material
       effects: $effects
       imgLink: $imgLink
-      armor: $armor
-      weapon: $weapon
+      cost: $cost
+      weight: $weight
+      type: $type
+      typeProperties: $typeProperties
+      hpBonus: $hpBonus
+      mpBonus: $mpBonus
+      skills: $skills
+      perks: $perks
+      spells: $spells
       attributes: $attributes
     ) {
       id
-      name
+      title
     }
   }
 `;
 
 export const CREATE_ITEM_MUTATION = gql`
   mutation CreateItemMutation(
-    $name: String!
-    $type: String!
-    $description: String!
-    $cost: Int
-    $material: String
+    $title: String
+    $description: String
     $effects: String
     $imgLink: String
-    $armor: ArmorMutation
-    $weapon: WeaponMutation
+    $cost: Int
+    $weight: Int
+    $type: String
+    $typeProperties: TypePropertiesMutation
+    $hpBonus: Int
+    $mpBonus: Int
+    $skills: [String]
+    $perks: [String]
+    $spells: [String]
     $attributes: AttributesMutation
   ) {
     addItem(
-      name: $name
-      type: $type
+      title: $title
       description: $description
-      cost: $cost
-      material: $material
       effects: $effects
       imgLink: $imgLink
-      armor: $armor
-      weapon: $weapon
+      cost: $cost
+      weight: $weight
+      type: $type
+      typeProperties: $typeProperties
+      hpBonus: $hpBonus
+      mpBonus: $mpBonus
+      skills: $skills
+      perks: $perks
+      spells: $spells
       attributes: $attributes
     ) {
       id
-      name
+      title
     }
   }
 `;

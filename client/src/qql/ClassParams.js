@@ -1,4 +1,5 @@
 import gql from "graphql-tag";
+import { perk, skill, spell, attributes } from "./QueryConstants";
 
 export const GET_ALL_CLASSES_QUERY = gql`
   query {
@@ -12,73 +13,71 @@ export const GET_ALL_CLASSES_QUERY = gql`
 
 export const GET_CLASS_QUERY = gql`
   query GetClassQuery($id: String!) {
+    perks { ${perk} }
+    skills { ${skill} }
+    spells { ${spell} }
     class(id: $id) {
       id
       title
       imgLink
       description
-      attributes {
-        Strength
-        Agility
-        Constitution
-        Perception
-        Intelligence
-        Spirit
-        Charisma
-      }
-      skills {
-        id
-        title
-      }
+      attributes { ${attributes} }
+      perks { id title description }
+      skills { id title description }
+      spells { id title description }
     }
-    skills {
-      id
-      title
-      description
-    }
+   
   }
 `;
 
 export const UPDATE_CLASS_MUTATION = gql`
-  mutation CreateClassMutation(
+  mutation UpdateClassMutation(
     $id: ID!
-    $name: String!
+    $title: String!
     $imgLink: String
     $description: String!
     $attributes: AttributesMutation!
     $skills: [String]
+    $spells: [String]
+    $perks: [String]
   ) {
     updateClass(
       id: $id
-      name: $name
+      title: $title
       imgLink: $imgLink
       description: $description
       attributes: $attributes
       skills: $skills
+      spells: $spells
+      perks: $perks
     ) {
       id
-      name
+      title
     }
   }
 `;
 
 export const CREATE_CLASS_MUTATION = gql`
   mutation CreateClassMutation(
-    $name: String!
+    $title: String!
     $imgLink: String
     $description: String!
     $attributes: AttributesMutation!
     $skills: [String]
+    $spells: [String]
+    $perks: [String]
   ) {
     addClass(
-      name: $name
+      title: $title
       imgLink: $imgLink
       description: $description
       attributes: $attributes
       skills: $skills
+      spells: $spells
+      perks: $perks
     ) {
       id
-      name
+      title
     }
   }
 `;

@@ -1,13 +1,11 @@
 const CurrentItem = require("../models/CurrentItemModel");
 
-exports.getCurrentItems = async (query) => {
+exports.getCurrentItems = async () => {
   try {
-    const param = query ? query : {};
-    const items = await CurrentItem.find(param)
+    return await CurrentItem.find()
       .populate("item")
       .populate("quality")
       .populate("material");
-    return items;
   } catch (err) {
     throw Error(err);
   }
@@ -15,11 +13,10 @@ exports.getCurrentItems = async (query) => {
 
 exports.getCurrentItem = async ({ id }) => {
   try {
-    const item = await CurrentItem.findOne({ _id: id })
+    return await CurrentItem.findOne({ _id: id })
       .populate("item")
       .populate("quality")
       .populate("material");
-    return item;
   } catch (err) {
     throw Error(err);
   }
@@ -27,8 +24,7 @@ exports.getCurrentItem = async ({ id }) => {
 
 exports.saveCurrentItem = async (query) => {
   try {
-    const newCurrentItem = await new CurrentItem(query).save();
-    return newCurrentItem;
+    return await new CurrentItem(query).save();
   } catch (err) {
     throw Error(err);
   }
@@ -36,11 +32,7 @@ exports.saveCurrentItem = async (query) => {
 
 exports.updateCurrentItem = async (query) => {
   try {
-    const updatedCurrentItem = await CurrentItem.findOneAndUpdate(
-      { _id: query.id },
-      query
-    );
-    return updatedCurrentItem;
+    return await CurrentItem.findOneAndUpdate({ _id: query.id }, query);
   } catch (err) {
     throw Error(err);
   }

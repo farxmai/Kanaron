@@ -1,20 +1,21 @@
 import React, { useState } from "react";
 import RaceView from "./sub-pages/RaceView";
-import RaceEdit from "./sub-pages/RaseEdit";
-import RaceLayout from "./sub-pages/RaceLayout";
+import RaceEdit from "./sub-pages/RaceEdit";
+import QueryLayout from "../../components/layouts/QueryLayout";
+import { GET_RACE_QUERY } from "../../qql/RaceParams";
 
-const RaceWrapper = (props) => {
+const Race = (props) => {
   const [edit, setEdit] = useState(false);
   const { id } = props.match.params;
-  const handleSetEdit = () => setEdit(!edit);
   if (id === "new") return <RaceEdit />;
   return (
-    <RaceLayout
-      id={id}
-      component={edit ? RaceEdit : RaceView}
-      setEdit={handleSetEdit}
+    <QueryLayout
+      query={GET_RACE_QUERY}
+      variables={{ id }}
+      Component={edit ? RaceEdit : RaceView}
+      setEdit={() => setEdit(!edit)}
     />
   );
 };
 
-export default RaceWrapper;
+export default Race;
