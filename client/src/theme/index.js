@@ -8,6 +8,7 @@ import StyledEngineProvider from "@material-ui/core/StyledEngineProvider";
 
 import palette from "./palette";
 import { getShadows, getCustomShadows } from "./shadows";
+import { getOverrides } from "./overrides";
 
 export default function ThemeProvider({ children }) {
   const isLight = false;
@@ -30,6 +31,7 @@ export default function ThemeProvider({ children }) {
   }, [isLight]);
 
   const theme = createMuiTheme(themeOptions);
+  theme.components = getOverrides(theme);
 
   return (
     <StyledEngineProvider injectFirst>

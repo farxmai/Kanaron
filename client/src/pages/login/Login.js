@@ -1,16 +1,10 @@
-import React, { Component, useState } from "react";
+import { useState } from "react";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
 import { userLogIn } from "../../services/authHandlers";
 import "./Login.css";
-import {
-  Box,
-  Button,
-  Card,
-  TextField,
-  Typography,
-  withStyles,
-} from "@material-ui/core";
+import { Box, Button, Card, Typography } from "@material-ui/core";
+import { CustomInput } from "../../components/forms/elements";
 
 const SIGNUP_MUTATION = gql`
   mutation SignupMutation($login: String!, $password: String!) {
@@ -29,19 +23,6 @@ const LOGIN_MUTATION = gql`
     }
   }
 `;
-
-const CssTextField = withStyles((theme) => ({
-  root: {
-    "& label.Mui-focused": {
-      color: theme.palette.secondary.main,
-    },
-    "& .MuiOutlinedInput-root": {
-      "&.Mui-focused fieldset": {
-        borderColor: theme.palette.secondary.main,
-      },
-    },
-  },
-}))(TextField);
 
 const Login = () => {
   const [values, setValues] = useState({
@@ -96,16 +77,15 @@ const Login = () => {
                 {isLogin ? "Вход" : "Регистрация"}
               </Typography>
               <div className="d-flex flex-column">
-                <CssTextField
+                <CustomInput
                   value={login}
                   onChange={(e) => setValue("login", e.target.value)}
                   type="text"
                   sx={{ mt: 1 }}
                   label="Логин"
                 />
-                <CssTextField
+                <CustomInput
                   value={password}
-                  // disabled
                   onChange={(e) => setValue("password", e.target.value)}
                   type="password"
                   label="Пароль"

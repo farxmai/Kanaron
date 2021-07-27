@@ -23,6 +23,7 @@ const RaceView = ({ race: data, setEdit }) => {
 
   const cards = [
     { label: "Общие сведенья", value: data.description },
+    { label: "Внешность", value: data.look },
     { label: "Культура и быт", value: data.description },
     { label: "Бонусные навыки", value: data.skills, listOf: "skills" },
     { label: "Бонусные заклинания", value: data.spells, listOf: "spells" },

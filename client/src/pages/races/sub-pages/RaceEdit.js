@@ -17,16 +17,10 @@ import {
   CheckListRow,
   ButtonRow,
 } from "../../../components/tables/FormRows";
-
-const defAttributes = {
-  Agility: 5,
-  Charisma: 5,
-  Constitution: 5,
-  Intelligence: 5,
-  Perception: 5,
-  Spirit: 5,
-  Strength: 5,
-};
+import { defAttributes } from "../../../constants/attributes";
+import { getDefaultState } from "../../../helpers/getDefaultState";
+import { Card } from "@material-ui/core";
+import AttributesForm from "../../../components/forms/AttributesForm";
 
 const RaceEdit = ({
   race: data,
@@ -35,129 +29,138 @@ const RaceEdit = ({
   perks: perksList,
   setEdit,
 }) => {
-  const [title, setTitle] = useState(data?.title || "");
-  const [height, setHeight] = useState(data?.height || "");
-  const [imgLink, setImgLink] = useState(data?.imgLink || "");
-  const [lifeSpan, setLifeSpan] = useState(data?.lifeSpan || "");
-  const [culture, setCulture] = useState(data?.culture || "");
-  const [description, setDescription] = useState(data?.description || "");
-  const [look, setLook] = useState(data?.look || "");
-  const [skills, setSkills] = useState(data?.skills || []);
-  const [spells, setSpells] = useState(data?.spells || []);
-  const [perks, setPerks] = useState(data?.perks || []);
-  const [attributes, setAttributes] = useState(
-    data?.attributes || defAttributes
-  );
-  const [open, setOpen] = useState(false);
+  const [values, setValues] = useState(data || getDefaultState("race"));
 
-  const history = useHistory();
+  // const [title, setTitle] = useState(data?.title || "");
+  // const [height, setHeight] = useState(data?.height || "");
+  // const [imgLink, setImgLink] = useState(data?.imgLink || "");
+  // const [lifeSpan, setLifeSpan] = useState(data?.lifeSpan || "");
+  // const [culture, setCulture] = useState(data?.culture || "");
+  // const [description, setDescription] = useState(data?.description || "");
+  // const [look, setLook] = useState(data?.look || "");
+  // const [skills, setSkills] = useState(data?.skills || []);
+  // const [spells, setSpells] = useState(data?.spells || []);
+  // const [perks, setPerks] = useState(data?.perks || []);
+  // const [attributes, setAttributes] = useState(
+  //   data?.attributes || defAttributes
+  // );
+  // const [open, setOpen] = useState(false);
 
-  const setAttrib = (type, value) =>
-    setAttributes({
-      ...attributes,
-      [type]: value,
-    });
+  // const history = useHistory();
 
-  const isInList = (searchArr, value) => {
-    const index = searchArr.findIndex((el) => el.id === value.id);
-    if (index === -1) return false;
-    return true;
-  };
+  // const setAttrib = (type, value) =>
+  //   setAttributes({
+  //     ...attributes,
+  //     [type]: value,
+  //   });
 
-  const handleSetValue = (searchArr, value, callback) => {
-    const index = searchArr.findIndex((el) => el.id === value.id);
-    console.log(index);
-    const newArr = [...searchArr];
-    if (index === -1) newArr.push(value);
-    else newArr.splice(index, 1);
-    callback(newArr);
-  };
+  // const isInList = (searchArr, value) => {
+  //   const index = searchArr.findIndex((el) => el.id === value.id);
+  //   if (index === -1) return false;
+  //   return true;
+  // };
 
-  const prepareRequestData = (id) => ({
-    id,
-    title,
-    imgLink,
-    culture,
-    description,
-    look,
-    height,
-    lifeSpan,
-    attributes,
-    skills: skills.map((skill) => skill.id),
-    spells: spells.map((spell) => spell.id),
-    perks: perks.map((perk) => perk.id),
-  });
+  // const handleSetValue = (searchArr, value, callback) => {
+  //   const index = searchArr.findIndex((el) => el.id === value.id);
+  //   console.log(index);
+  //   const newArr = [...searchArr];
+  //   if (index === -1) newArr.push(value);
+  //   else newArr.splice(index, 1);
+  //   callback(newArr);
+  // };
 
-  const attribFields = attributesTranslate.map((el) => ({
-    label: el.ru,
-    component: NumberRow,
-    value: attributes[el.eng],
-    onChange: (val) => setAttrib(el.eng, val),
-  }));
+  // const prepareRequestData = (id) => ({
+  //   id,
+  //   title,
+  //   imgLink,
+  //   culture,
+  //   description,
+  //   look,
+  //   height,
+  //   lifeSpan,
+  //   attributes,
+  //   skills: skills.map((skill) => skill.id),
+  //   spells: spells.map((spell) => spell.id),
+  //   perks: perks.map((perk) => perk.id),
+  // });
 
-  const fields = [
-    {
-      label: "Название",
-      component: InputRow,
-      value: title,
-      onChange: setTitle,
-    },
-    {
-      label: "Изображение",
-      component: InputRow,
-      value: imgLink,
-      onChange: setImgLink,
-    },
-    { label: "Рост", component: NumberRow, value: height, onChange: setHeight },
-    {
-      label: "Срок жизни",
-      component: NumberRow,
-      value: lifeSpan,
-      onChange: setLifeSpan,
-    },
-    {
-      label: "Общее описание",
-      component: TextAreaRow,
-      value: description,
-      onChange: setDescription,
-    },
-    {
-      label: "Внешний вид",
-      component: TextAreaRow,
-      value: look,
-      onChange: setLook,
-    },
-    {
-      label: "Культура",
-      component: TextAreaRow,
-      value: culture,
-      onChange: setCulture,
-    },
-    {
-      label: "Бонусные навыки",
-      component: CheckListRow,
-      array: skillsList,
-      onChange: (val) => handleSetValue(skills, val, setSkills),
-      isInArray: (val) => isInList(skills, val),
-    },
-    {
-      label: "Бонусные заклинания",
-      component: CheckListRow,
-      array: spellsList,
-      onChange: (val) => handleSetValue(spells, val, setSpells),
-      isInArray: (val) => isInList(spells, val),
-    },
-    {
-      label: "Бонусные перки",
-      component: CheckListRow,
-      array: perksList,
-      onChange: (val) => handleSetValue(perks, val, setPerks),
-      isInArray: (val) => isInList(perks, val),
-    },
-  ];
+  // const attribFields = attributesTranslate.map((el) => ({
+  //   label: el.ru,
+  //   component: NumberRow,
+  //   value: attributes[el.eng],
+  //   onChange: (val) => setAttrib(el.eng, val),
+  // }));
 
+  // const fields = [
+  //   {
+  //     label: "Название",
+  //     component: InputRow,
+  //     value: title,
+  //     onChange: setTitle,
+  //   },
+  //   {
+  //     label: "Изображение",
+  //     component: InputRow,
+  //     value: imgLink,
+  //     onChange: setImgLink,
+  //   },
+  //   { label: "Рост", component: NumberRow, value: height, onChange: setHeight },
+  //   {
+  //     label: "Срок жизни",
+  //     component: NumberRow,
+  //     value: lifeSpan,
+  //     onChange: setLifeSpan,
+  //   },
+  //   {
+  //     label: "Общее описание",
+  //     component: TextAreaRow,
+  //     value: description,
+  //     onChange: setDescription,
+  //   },
+  //   {
+  //     label: "Внешний вид",
+  //     component: TextAreaRow,
+  //     value: look,
+  //     onChange: setLook,
+  //   },
+  //   {
+  //     label: "Культура",
+  //     component: TextAreaRow,
+  //     value: culture,
+  //     onChange: setCulture,
+  //   },
+  //   {
+  //     label: "Бонусные навыки",
+  //     component: CheckListRow,
+  //     array: skillsList,
+  //     onChange: (val) => handleSetValue(skills, val, setSkills),
+  //     isInArray: (val) => isInList(skills, val),
+  //   },
+  //   {
+  //     label: "Бонусные заклинания",
+  //     component: CheckListRow,
+  //     array: spellsList,
+  //     onChange: (val) => handleSetValue(spells, val, setSpells),
+  //     isInArray: (val) => isInList(spells, val),
+  //   },
+  //   {
+  //     label: "Бонусные перки",
+  //     component: CheckListRow,
+  //     array: perksList,
+  //     onChange: (val) => handleSetValue(perks, val, setPerks),
+  //     isInArray: (val) => isInList(perks, val),
+  //   },
+  // ];
+
+  const [n, setN] = useState(0);
+  console.log(n);
   return (
-    <Mutation
+    <>
+      <Card sx={{ p: 3, width: { xs: 300, sm: "100%" }, m: "auto" }}>
+        <AttributesForm attributes={data.attributes} />
+      </Card>
+
+      {/* <Mutation
       mutation={data?.id ? UPDATE_RACE_MUTATION : CREATE_RACE_MUTATION}
       variables={prepareRequestData(data?.id)}
       onCompleted={(res) => history.push(`/races/${res.addRace.id}`)}
@@ -220,7 +223,8 @@ const RaceEdit = ({
           </Table>
         </form>
       )}
-    </Mutation>
+    </Mutation> */}
+    </>
   );
 };
 
