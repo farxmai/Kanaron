@@ -1,10 +1,10 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { Query } from "@apollo/client";
 import Generator from "./Generator";
 import Loader from "../../components/loader/Loader";
 import { GET_GENERATOR_DATA_QUERY } from "../../qql/CharacterParams";
 import { defEquipment } from "../../def-states";
-import { itemTypesTranslate } from "../../components/translate/dictionary";
+import { itemTypesTranslate } from "../../translate/dictionary";
 
 const itemsFilterByEquip = (items) => {
   const filteredItems = { ...defEquipment };
@@ -47,8 +47,7 @@ const GeneratorLayout = ({ user, character }) => (
     {({ loading, error, data }) => {
       if (loading) return <Loader />;
       if (error) return <p>Error :(</p>;
-      if (!data.races.length || !data.classes.length)
-        return <p>Empty arrays returned</p>;
+      if (!data.races.length || !data.classes.length) return <p>Empty arrays returned</p>;
       return null;
       return (
         <Generator

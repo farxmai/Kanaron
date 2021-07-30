@@ -1,5 +1,5 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { Query } from "@apollo/client";
 import { GET_PERK_QUERY } from "../../../qql/PerkQuery";
 
 const PerkLayout = ({ id, component: Component, setEdit }) => (

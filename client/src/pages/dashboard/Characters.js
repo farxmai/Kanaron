@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React from "react";
-import { Query } from "react-apollo";
+import { Query } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
@@ -21,7 +21,7 @@ const Characters = (props) => (
             <h2>{data.characters.length}/6</h2>
           </div>
           <div className="chars-wrapper">
-            {data.characters.map((char) => (
+            {/* {data.characters.map((char) => (
               <div className="char-wrapper">
                 <Link
                   to={`/dashboard/characters/${char.id}`}
@@ -33,7 +33,7 @@ const Characters = (props) => (
                   <div>Ур: {char.lvl}</div>
                 </Link>
               </div>
-            ))}
+            ))} */}
             {data.characters.length < 6 && (
               <div className="char-wrapper">
                 <Link to="/dashboard/characters/create" className="ml-3">

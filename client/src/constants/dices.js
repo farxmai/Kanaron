@@ -7,3 +7,6 @@ export const dices = [
   { label: "d20", value: 20 },
   { label: "d100", value: 100 },
 ];
+
+export const getDiceLabel = (val) =>
+  dices.find((el) => el.value === val)?.label;

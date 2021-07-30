@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Query } from "react-apollo";
+import { Query } from "@apollo/client";
 import { withRouter } from "react-router";
 import { GET_CHARACTER_QUERY } from "../../qql/CharacterParams";
 import Loader from "../../components/loader/Loader";

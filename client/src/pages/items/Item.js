@@ -1,20 +1,21 @@
-import React, { useState } from "react";
-import ItemLayout from "./sub-pages/ItemLayout";
+import { useState } from "react";
+import { GET_ITEM_QUERY } from "qql/ItemQuery";
 import ItemEdit from "./sub-pages/ItemEdit";
 import ItemView from "./sub-pages/ItemView";
+import QueryLayout from "components/layouts/QueryLayout";
 
-const ItemWrapper = (props) => {
+const Item = (props) => {
   const [edit, setEdit] = useState(false);
   const { id } = props.match.params;
-  const handleSetEdit = () => setEdit(!edit);
   if (id === "new") return <ItemEdit />;
   return (
-    <ItemLayout
-      id={id}
-      component={edit ? ItemEdit : ItemView}
-      setEdit={handleSetEdit}
+    <QueryLayout
+      query={GET_ITEM_QUERY}
+      variables={{ id }}
+      Component={edit ? ItemEdit : ItemView}
+      setEdit={() => setEdit(!edit)}
     />
   );
 };
 
-export default ItemWrapper;
+export default Item;

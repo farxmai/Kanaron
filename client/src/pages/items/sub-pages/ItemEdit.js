@@ -1,247 +1,136 @@
-/* eslint-disable object-curly-newline */
-import React, { useState } from "react";
-import { Table } from "react-bootstrap";
-import { Mutation } from "react-apollo";
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
 import { useHistory } from "react-router";
+import { Grid } from "@material-ui/core";
+
+import { getDefaultState } from "helpers/getDefaultState";
+import { FormTitle } from "components/forms/elements";
+import QueryLayout from "components/layouts/QueryLayout";
+import { DeleteButtonLarge, SaveButton } from "components/buttons";
+import { DynamicForm } from "components/forms";
+
 import {
-  attributesTranslate,
-  weaponParamsTranslate,
-  armorParamsTranslate,
-  itemTypesTranslate,
-  armorTypesTranslate,
-} from "../../../components/translate/dictionary";
-import {
-  HeaderRow,
-  InputRow,
-  NumberRow,
-  RadioGroupRow,
-  TextAreaRow,
-  ButtonRow,
-  SubmitRow,
-} from "../../../components/tables/FormRows";
-import {
-  UPDATE_ITEM_MUTATION,
   CREATE_ITEM_MUTATION,
-} from "../../../qql/ItemParams";
+  DELETE_ITEM_MUTATION,
+  GET_ITEM_QUERY,
+  UPDATE_ITEM_MUTATION,
+} from "qql/ItemQuery";
+import { GET_SELECTED_LISTS_ITEMS_QUERY } from "qql/GlobalQueries";
+import { BaseModal } from "components/modals/BaseModal";
+import ItemTypeEditWrapper from "./ItemTypesForm";
 
-const defAttributes = {
-  Agility: 0,
-  Charisma: 0,
-  Constitution: 0,
-  Intelligence: 0,
-  Perception: 0,
-  Spirit: 0,
-  Strength: 0,
-};
-
-const defWeapon = {
-  baseAttack: 0,
-  critAttack: 0,
-  critHit: 0,
-  damageDice: 0,
-  recharge: 0,
-  specialData: "",
-};
-
-const defArmor = {
-  baseDefense: 0,
-  agilityCut: 0,
-  type: "",
-  specialData: "",
-};
-
-const ClassEdit = ({ data, setEdit }) => {
-  const [name, setName] = useState(data?.name || "");
-  const [type, setType] = useState(data?.type || "");
-  const [imgLink, setImgLink] = useState(data?.imgLink || "");
-  const [material, setMaterial] = useState(data?.material || "");
-  const [cost, setCost] = useState(data?.cost || 0);
-  const [effects, setEffects] = useState(data?.effects || "");
-  const [description, setDescription] = useState(data?.description || "");
-  const [withAttributes, setWithAttributes] = useState(false);
-  const [attributes, setAttributes] = useState(
-    data?.attributes || defAttributes
-  );
-  const [weapon, setWeapon] = useState(data?.weapon || defWeapon);
-  const [armor, setArmor] = useState(data?.armor || defArmor);
-
+const ItemEdit = ({
+  currentItem: data,
+  items: itemsList,
+  materials: materialsList,
+  qualities: qualitiesList,
+  setEdit,
+}) => {
   const history = useHistory();
+  const id = data?.id || null;
+  const [values, setValues] = useState(data || getDefaultState("currentItem"));
+  const [itemsOpen, setItemsOpen] = useState(false);
+  const [materialsOpen, setMaterialsOpen] = useState(false);
+  const [qualitiesOpen, setQualitiesOpen] = useState(false);
 
-  const setParam = (init, setValue, type, value) =>
-    setValue({
-      ...init,
+  const [mutation, { loading, error }] = useMutation(
+    id ? UPDATE_ITEM_MUTATION : CREATE_ITEM_MUTATION,
+    {
+      onCompleted: (res) => (id ? setEdit() : history.push(`/items/${res.addCurrentItem.id}`)),
+      refetchQueries: id ? [{ query: GET_ITEM_QUERY, variables: { id } }] : null,
+      onError: (err) => alert(err.message),
+    }
+  );
+
+  const [remove, { loading: removing }] = useMutation(DELETE_ITEM_MUTATION, {
+    onCompleted: (res) => history.push(`/items`),
+    onError: (err) => alert(err.message),
+  });
+
+  const setCurrentValue = (type, value) =>
+    setValues({
+      ...values,
       [type]: value,
     });
 
-  const itemTypes = itemTypesTranslate.map((el) => ({
-    value: el.eng,
-    label: el.ru,
-  }));
-  const armorTypes = armorTypesTranslate.map((el) => ({
-    value: el.eng,
-    label: el.ru,
-  }));
-
-  const fields = [
-    { label: "Название", component: InputRow, value: name, onChange: setName },
+  const infoFields = [
     {
-      label: "Изображение",
-      component: InputRow,
-      value: imgLink,
-      onChange: setImgLink,
+      type: "input",
+      field: "title",
+      label: "Название",
     },
     {
+      type: "select",
+      field: "item",
+      label: "Тип Предмета",
+      options: itemsList,
+      onPlus: () => setItemsOpen(true),
+    },
+    {
+      type: "select",
+      field: "material",
       label: "Материал",
-      component: InputRow,
-      value: material,
-      onChange: setMaterial,
+      options: materialsList,
     },
     {
-      label: "Стоимость (ж.м)",
-      component: NumberRow,
-      value: cost,
-      onChange: setCost,
-    },
-    {
-      label: "Общее описание",
-      component: TextAreaRow,
-      value: description,
-      onChange: setDescription,
-    },
-    {
-      label: "Свойства предмета",
-      component: TextAreaRow,
-      value: effects,
-      onChange: setEffects,
-    },
-    {
-      label: "Тип предмета",
-      component: RadioGroupRow,
-      value: type,
-      onChange: setType,
-      array: itemTypes,
+      type: "select",
+      field: "quality",
+      label: "Качество",
+      options: qualitiesList,
     },
   ];
 
-  const weaponFields = weaponParamsTranslate.map((el) => ({
-    label: el.ru,
-    component: el.type === "textarea" ? TextAreaRow : NumberRow,
-    value: weapon[el.eng],
-    onChange: (val) => setParam(weapon, setWeapon, el.eng, val),
-  }));
-
-  const armorFields = armorParamsTranslate.map((el) => ({
-    label: el.ru,
-    component:
-      el.type === "textarea"
-        ? TextAreaRow
-        : el.type === "input"
-        ? RadioGroupRow
-        : NumberRow,
-    value: armor[el.eng],
-    onChange: (val) => setParam(armor, setArmor, el.eng, val),
-    array: el.type === "input" ? armorTypes : [],
-  }));
-
-  const attribFields = attributesTranslate.map((el) => ({
-    label: el.ru,
-    component: NumberRow,
-    value: attributes[el.eng],
-    onChange: (val) => setParam(attributes, setAttributes, el.eng, val),
-  }));
-
-  const prepareRequestData = (id) => ({
-    id,
-    name,
-    type,
-    imgLink,
-    material,
-    cost,
-    effects,
-    description,
-    attributes,
-    weapon,
-    armor,
-  });
+  const requestData = {
+    variables: {
+      ...values,
+      item: values.item?.id || null,
+      material: values.material?.id || null,
+      quality: values.quality?.id || null,
+    },
+  };
 
   return (
-    <Mutation
-      mutation={data?.id ? UPDATE_ITEM_MUTATION : CREATE_ITEM_MUTATION}
-      variables={prepareRequestData(data?.id)}
-      onCompleted={(res) => history.push(`/items/${res.addItem.id}`)}
-      onError={(err) => console.log(err)}
-    >
-      {(mutation) => (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            mutation();
-          }}
-        >
-          <Table striped bordered hover variant="dark">
-            <thead>
-              {setEdit ? (
-                <HeaderRow label="Редактирование" setEdit={setEdit} />
-              ) : (
-                <HeaderRow label="Создание" />
-              )}
-            </thead>
-            <tbody>
-              {fields.map(
-                ({ label, component: Component, value, onChange, array }) => (
-                  <Component
-                    label={label}
-                    onChange={onChange}
-                    value={value}
-                    array={array}
-                  />
-                )
-              )}
-              {type === "weapon" &&
-                weaponFields.map(
-                  ({ label, component: Component, value, onChange, array }) => (
-                    <Component
-                      label={label}
-                      onChange={onChange}
-                      value={value}
-                      array={array}
-                    />
-                  )
-                )}
-              {type === "armor" &&
-                armorFields.map(
-                  ({ label, component: Component, value, onChange, array }) => (
-                    <Component
-                      label={label}
-                      onChange={onChange}
-                      value={value}
-                      array={array}
-                    />
-                  )
-                )}
-              <ButtonRow
-                open={withAttributes}
-                onClick={() => setWithAttributes(!withAttributes)}
-                label="Бонус атрибутов"
-              />
-              {withAttributes &&
-                attribFields.map(
-                  ({ label, component: Component, value, onChange, array }) => (
-                    <Component
-                      label={label}
-                      onChange={onChange}
-                      value={value}
-                      array={array}
-                    />
-                  )
-                )}
-              <SubmitRow back={setEdit} />
-            </tbody>
-          </Table>
-        </form>
-      )}
-    </Mutation>
+    <Grid container spacing={1}>
+      <BaseModal open={itemsOpen} onClose={() => setItemsOpen(false)}>
+        <ItemTypeEditWrapper onCompleted={(val) => itemsList.push(val)} />
+      </BaseModal>
+      <Grid item xs={12}>
+        <FormTitle title={`${id ? "Редактирование" : "Создание"} Предмета`} onEdit={setEdit} />
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <DynamicForm
+          title='Базовая информация'
+          fields={infoFields}
+          values={values}
+          setValues={setCurrentValue}
+        />
+      </Grid>
+      <Grid item xs={12} md={4}>
+        {id && (
+          <DeleteButtonLarge
+            onDelete={() => remove({ variables: { id } })}
+            loading={loading || removing}
+          />
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        <SaveButton
+          onClick={() => mutation(requestData)}
+          loading={loading || removing}
+          error={error}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
-export default ClassEdit;
+const ItemEditWrapper = (props) => (
+  <QueryLayout
+    query={GET_SELECTED_LISTS_ITEMS_QUERY}
+    Component={ItemEdit}
+    fetchPolicy='cache-first'
+    {...props}
+  />
+);
+
+export default ItemEditWrapper;

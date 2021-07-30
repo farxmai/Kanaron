@@ -1,25 +1,19 @@
-import { Card, Divider, Typography } from "@material-ui/core";
-import { attributesTranslate } from "../translate/dictionary";
+import { CardBordered } from "../cards";
+import { attributesTranslate } from "../../translate/dictionary";
 import { CustomNunInput } from "./elements";
 
-const AttributesForm = ({ attributes, setAttribute }) => {
+export const AttributesForm = ({ attributes, setAttribute }) => {
   const rows = attributesTranslate;
   return (
-    <Card sx={{ p: 1 }} variant="bordered">
-      <Typography variant="h5" gutterBottom>
-        Атрибуты
-      </Typography>
-      <Divider />
+    <CardBordered title='Атрибуты'>
       {rows.map((row) => (
         <CustomNunInput
+          key={row.eng}
           label={row.ru}
-          value={attributes[row.eng]}
+          value={attributes ? attributes[row.eng] : 0}
           onChange={(val) => setAttribute(row.eng, val)}
-          sx={{ pb: 1 }}
         />
       ))}
-    </Card>
+    </CardBordered>
   );
 };
-
-export default AttributesForm;

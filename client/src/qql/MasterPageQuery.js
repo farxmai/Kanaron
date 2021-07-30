@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 
 export const GET_ALL_STAFF_QUERY = gql`
   query {
@@ -32,6 +32,7 @@ export const GET_ALL_STAFF_QUERY = gql`
       }
       quality {
         title
+        color
       }
     }
     items {

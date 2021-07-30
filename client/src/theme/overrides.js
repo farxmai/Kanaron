@@ -1,11 +1,45 @@
+import { darkScrollbar } from "@material-ui/core";
+
 export const getOverrides = (theme) => ({
+  MuiCssBaseline: {
+    styleOverrides: {
+      html: {
+        body: {
+          ...darkScrollbar({
+            track: theme.palette.grey[800],
+            thumb: theme.palette.grey[700],
+            active: theme.palette.grey[900],
+          }),
+        },
+      },
+    },
+  },
+  MuiTableCell: {
+    styleOverrides: {
+      root: {
+        border: 0,
+      },
+    },
+  },
   MuiCard: {
+    styleOverrides: {
+      root: {
+        boxShadow: theme.customShadows.z24,
+      },
+    },
     variants: [
       {
         props: { variant: "bordered" },
         style: {
           border: "1px solid",
           borderColor: theme.palette.secondary.main,
+        },
+      },
+      {
+        props: { variant: "translucent" },
+        style: {
+          background: theme.palette.background.neutral,
+          padding: theme.spacing(2),
         },
       },
     ],

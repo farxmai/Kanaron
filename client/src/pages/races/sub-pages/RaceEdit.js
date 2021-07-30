@@ -1,26 +1,22 @@
-/* eslint-disable object-curly-newline */
-import React, { useState } from "react";
-import { Table } from "react-bootstrap";
-import { Mutation } from "react-apollo";
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
 import { useHistory } from "react-router";
-import { attributesTranslate } from "../../../components/translate/dictionary";
+import { Grid } from "@material-ui/core";
+
 import {
   UPDATE_RACE_MUTATION,
   CREATE_RACE_MUTATION,
-} from "../../../qql/RaceParams";
-import {
-  HeaderRow,
-  InputRow,
-  NumberRow,
-  TextAreaRow,
-  SubmitRow,
-  CheckListRow,
-  ButtonRow,
-} from "../../../components/tables/FormRows";
-import { defAttributes } from "../../../constants/attributes";
-import { getDefaultState } from "../../../helpers/getDefaultState";
-import { Card } from "@material-ui/core";
-import AttributesForm from "../../../components/forms/AttributesForm";
+  GET_RACE_QUERY,
+  DELETE_RACE_MUTATION,
+} from "qql/RaceQuery";
+import { GET_SELECTED_LISTS_QUERY } from "qql/GlobalQueries";
+
+import { getDefaultState } from "helpers/getDefaultState";
+import { FormTitle } from "components/forms/elements";
+import { sizes } from "constants/sizes";
+import QueryLayout from "components/layouts/QueryLayout";
+import { AttributesForm, DynamicForm } from "components/forms";
+import { DeleteButtonLarge, SaveButton } from "components/buttons";
 
 const RaceEdit = ({
   race: data,
@@ -29,203 +25,171 @@ const RaceEdit = ({
   perks: perksList,
   setEdit,
 }) => {
+  const history = useHistory();
+  const id = data?.id || null;
   const [values, setValues] = useState(data || getDefaultState("race"));
 
-  // const [title, setTitle] = useState(data?.title || "");
-  // const [height, setHeight] = useState(data?.height || "");
-  // const [imgLink, setImgLink] = useState(data?.imgLink || "");
-  // const [lifeSpan, setLifeSpan] = useState(data?.lifeSpan || "");
-  // const [culture, setCulture] = useState(data?.culture || "");
-  // const [description, setDescription] = useState(data?.description || "");
-  // const [look, setLook] = useState(data?.look || "");
-  // const [skills, setSkills] = useState(data?.skills || []);
-  // const [spells, setSpells] = useState(data?.spells || []);
-  // const [perks, setPerks] = useState(data?.perks || []);
-  // const [attributes, setAttributes] = useState(
-  //   data?.attributes || defAttributes
-  // );
-  // const [open, setOpen] = useState(false);
+  const [mutation, { loading, error }] = useMutation(
+    id ? UPDATE_RACE_MUTATION : CREATE_RACE_MUTATION,
+    {
+      onCompleted: (res) =>
+        id ? setEdit() : history.push(`/races/${res.addRace.id}`),
+      refetchQueries: id
+        ? [{ query: GET_RACE_QUERY, variables: { id } }]
+        : null,
+      onError: (err) => alert(err.message),
+    }
+  );
 
-  // const history = useHistory();
+  const [remove, { loading: removing }] = useMutation(DELETE_RACE_MUTATION, {
+    onCompleted: (res) => history.push(`/races`),
+    onError: (err) => alert(err.message),
+  });
 
-  // const setAttrib = (type, value) =>
-  //   setAttributes({
-  //     ...attributes,
-  //     [type]: value,
-  //   });
+  const setCurrentValue = (type, value) =>
+    setValues({
+      ...values,
+      [type]: value,
+    });
 
-  // const isInList = (searchArr, value) => {
-  //   const index = searchArr.findIndex((el) => el.id === value.id);
-  //   if (index === -1) return false;
-  //   return true;
-  // };
+  const setAttribute = (type, value) =>
+    setValues({
+      ...values,
+      attributes: {
+        ...values.attributes,
+        [type]: value,
+      },
+    });
 
-  // const handleSetValue = (searchArr, value, callback) => {
-  //   const index = searchArr.findIndex((el) => el.id === value.id);
-  //   console.log(index);
-  //   const newArr = [...searchArr];
-  //   if (index === -1) newArr.push(value);
-  //   else newArr.splice(index, 1);
-  //   callback(newArr);
-  // };
+  const infoFields = [
+    {
+      type: "input",
+      field: "title",
+      label: "Название",
+    },
+    {
+      type: "input",
+      field: "imgLink",
+      label: "Изображение",
+    },
+    {
+      type: "radio",
+      field: "size",
+      label: "Размер",
+      options: sizes,
+    },
+    {
+      type: "number",
+      field: "height",
+      label: "Рост (см)",
+      length: 3,
+    },
 
-  // const prepareRequestData = (id) => ({
-  //   id,
-  //   title,
-  //   imgLink,
-  //   culture,
-  //   description,
-  //   look,
-  //   height,
-  //   lifeSpan,
-  //   attributes,
-  //   skills: skills.map((skill) => skill.id),
-  //   spells: spells.map((spell) => spell.id),
-  //   perks: perks.map((perk) => perk.id),
-  // });
+    {
+      type: "number",
+      field: "lifeSpan",
+      label: "Продолжительность жизни (лет)",
+      length: 3,
+    },
+    {
+      type: "text",
+      field: "description",
+      label: "Общее описание",
+    },
+    {
+      type: "text",
+      field: "look",
+      label: "Внешний вид",
+    },
+    {
+      type: "text",
+      field: "culture",
+      label: "Культура",
+    },
+  ];
 
-  // const attribFields = attributesTranslate.map((el) => ({
-  //   label: el.ru,
-  //   component: NumberRow,
-  //   value: attributes[el.eng],
-  //   onChange: (val) => setAttrib(el.eng, val),
-  // }));
+  const bonusFields = [
+    {
+      type: "multiselect",
+      field: "skills",
+      label: "Бонусные навыки",
+      options: skillsList,
+    },
+    {
+      type: "multiselect",
+      field: "spells",
+      label: "Бонусные заклинания",
+      options: spellsList,
+    },
+    {
+      type: "multiselect",
+      field: "perks",
+      label: "Бонусные перки",
+      options: perksList,
+    },
+  ];
 
-  // const fields = [
-  //   {
-  //     label: "Название",
-  //     component: InputRow,
-  //     value: title,
-  //     onChange: setTitle,
-  //   },
-  //   {
-  //     label: "Изображение",
-  //     component: InputRow,
-  //     value: imgLink,
-  //     onChange: setImgLink,
-  //   },
-  //   { label: "Рост", component: NumberRow, value: height, onChange: setHeight },
-  //   {
-  //     label: "Срок жизни",
-  //     component: NumberRow,
-  //     value: lifeSpan,
-  //     onChange: setLifeSpan,
-  //   },
-  //   {
-  //     label: "Общее описание",
-  //     component: TextAreaRow,
-  //     value: description,
-  //     onChange: setDescription,
-  //   },
-  //   {
-  //     label: "Внешний вид",
-  //     component: TextAreaRow,
-  //     value: look,
-  //     onChange: setLook,
-  //   },
-  //   {
-  //     label: "Культура",
-  //     component: TextAreaRow,
-  //     value: culture,
-  //     onChange: setCulture,
-  //   },
-  //   {
-  //     label: "Бонусные навыки",
-  //     component: CheckListRow,
-  //     array: skillsList,
-  //     onChange: (val) => handleSetValue(skills, val, setSkills),
-  //     isInArray: (val) => isInList(skills, val),
-  //   },
-  //   {
-  //     label: "Бонусные заклинания",
-  //     component: CheckListRow,
-  //     array: spellsList,
-  //     onChange: (val) => handleSetValue(spells, val, setSpells),
-  //     isInArray: (val) => isInList(spells, val),
-  //   },
-  //   {
-  //     label: "Бонусные перки",
-  //     component: CheckListRow,
-  //     array: perksList,
-  //     onChange: (val) => handleSetValue(perks, val, setPerks),
-  //     isInArray: (val) => isInList(perks, val),
-  //   },
-  // ];
+  const requestData = {
+    variables: {
+      ...values,
+      skills: values.skills.map((el) => el.id),
+      spells: values.spells.map((el) => el.id),
+      perks: values.perks.map((el) => el.id),
+    },
+  };
 
-  const [n, setN] = useState(0);
-  console.log(n);
   return (
-    <>
-      <Card sx={{ p: 3, width: { xs: 300, sm: "100%" }, m: "auto" }}>
-        <AttributesForm attributes={data.attributes} />
-      </Card>
-
-      {/* <Mutation
-      mutation={data?.id ? UPDATE_RACE_MUTATION : CREATE_RACE_MUTATION}
-      variables={prepareRequestData(data?.id)}
-      onCompleted={(res) => history.push(`/races/${res.addRace.id}`)}
-      onError={(err) => console.log(err)}
-    >
-      {(mutation) => (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            mutation();
-          }}
-        >
-          <Table striped bordered hover variant="dark">
-            <thead>
-              {setEdit ? (
-                <HeaderRow label="Редактирование" setEdit={setEdit} />
-              ) : (
-                <HeaderRow label="Создание" />
-              )}
-            </thead>
-            <tbody>
-              {fields.map(
-                ({
-                  label,
-                  component: Component,
-                  value,
-                  onChange,
-                  array,
-                  isInArray,
-                }) => (
-                  <Component
-                    label={label}
-                    onChange={onChange}
-                    value={value}
-                    array={array}
-                    isInArray={isInArray}
-                  />
-                )
-              )}
-
-              <ButtonRow
-                label="Атрибуты"
-                onClick={() => setOpen(!open)}
-                open={open}
-              />
-              {open &&
-                attribFields.map(
-                  ({ label, component: Component, value, onChange, array }) => (
-                    <Component
-                      label={label}
-                      onChange={onChange}
-                      value={value}
-                      array={array}
-                    />
-                  )
-                )}
-
-              <SubmitRow back={setEdit} />
-            </tbody>
-          </Table>
-        </form>
-      )}
-    </Mutation> */}
-    </>
+    <Grid container spacing={1}>
+      <Grid item xs={12}>
+        <FormTitle
+          title={`${id ? "Редактирование" : "Создание"} Расы`}
+          onEdit={setEdit}
+        />
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <DynamicForm
+          title="Базовая информация"
+          fields={infoFields}
+          values={values}
+          setValues={setCurrentValue}
+        />
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <AttributesForm
+          attributes={values.attributes}
+          setAttribute={setAttribute}
+        />
+        <DynamicForm
+          title="Бонусы"
+          fields={bonusFields}
+          values={values}
+          setValues={setCurrentValue}
+        />
+        {id && (
+          <DeleteButtonLarge
+            onDelete={() => remove({ variables: { id } })}
+            loading={loading || removing}
+          />
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        <SaveButton
+          onClick={() => mutation(requestData)}
+          loading={loading || removing}
+          error={error}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
-export default RaceEdit;
+const RaceEditWrapper = (props) => (
+  <QueryLayout
+    query={GET_SELECTED_LISTS_QUERY}
+    Component={RaceEdit}
+    fetchPolicy="cache-first"
+    {...props}
+  />
+);
+
+export default RaceEditWrapper;

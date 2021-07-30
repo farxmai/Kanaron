@@ -1,5 +1,5 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { Query } from "@apollo/client";
 import { GET_SPELL_QUERY } from "../../../qql/SpellQuery";
 
 const SpellLayout = ({ id, component: Component, setEdit }) => (

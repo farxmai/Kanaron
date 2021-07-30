@@ -1,13 +1,18 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAlignJustify,
   faUsers,
   faUserEdit,
   faDatabase,
 } from "@fortawesome/free-solid-svg-icons";
-import "./MasterPage.css";
-import DataManagerLayout from "./DataManagerLayout";
+import {
+  AppBar,
+  Tab,
+  Box,
+  makeStyles,
+  Tabs,
+  Typography,
+} from "@material-ui/core";
 
 const tabs = [
   { label: "Менеджер данных", icon: faDatabase },
@@ -16,45 +21,49 @@ const tabs = [
   { label: "Блог", icon: faAlignJustify },
 ];
 
-const MasterMenu = ({ activeTab, setTab }) => (
-  <div className="master-menu">
-    {tabs.map((tab, i) => (
-      <div
-        key={i}
-        className={`master-menu-item ${i === activeTab ? "active" : ""}`}
-        onClick={() => setTab(i)}
-      >
-        <FontAwesomeIcon icon={tab.icon} className="master-menu-icon" />
-        <div className="master-menu-text">{tab.label}</div>
-      </div>
-    ))}
-  </div>
-);
-
-const MasterPageLayout = () => {
-  const [activeTab, setTab] = useState(0);
-
-  const getContent = (activeTab) => {
-    switch (activeTab) {
-      case 0:
-        return <DataManagerLayout />;
-      case 1:
-        return <p>{activeTab}</p>;
-      case 2:
-        return <p>{activeTab}</p>;
-      case 3:
-        return <p>{activeTab}</p>;
-      default:
-        return <p>{activeTab}</p>;
-    }
-  };
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
   return (
-    <div className="d-flex flex-colum">
-      <MasterMenu activeTab={activeTab} setTab={setTab} />
-      <div className="master-content-wrapper">{getContent(activeTab)}</div>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
     </div>
   );
-};
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.paper,
+  },
+}));
+
+function MasterPageLayout() {
+  const classes = useStyles();
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return <div className={classes.root}></div>;
+}
 
 export default MasterPageLayout;

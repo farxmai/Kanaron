@@ -1,8 +1,8 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { Query } from "@apollo/client";
 import { Link } from "react-router-dom";
-import { skillTypesTranslate } from "../../components/translate/dictionary";
-import { GET_ALL_SKILLS_QUERY } from "../../qql/SkillParams";
+import { skillTypesTranslate } from "../../translate/dictionary";
+import { GET_ALL_SKILLS_QUERY } from "../../qql/SkillQuery";
 
 const Skills = () => (
   <Query query={GET_ALL_SKILLS_QUERY}>
@@ -17,8 +17,8 @@ const Skills = () => (
       });
 
       return (
-        <div className="d-flex flex-wrap">
-          {skillTypesTranslate.map(({ eng, ru }) => (
+        <div className='d-flex flex-wrap'>
+          {/* {skillTypesTranslate.map(({ eng, ru }) => (
             <ul className="col-6">
               <div className="mb-2">
                 <b>{ru}</b>
@@ -29,7 +29,7 @@ const Skills = () => (
                 </li>
               ))}
             </ul>
-          ))}
+          ))} */}
         </div>
       );
     }}

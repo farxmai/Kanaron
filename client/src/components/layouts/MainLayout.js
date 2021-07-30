@@ -17,13 +17,13 @@ export default function MainLayout({ user, children }) {
   };
 
   return (
-    <div className={classes.root}>
+    <Box className={classes.root}>
       <Header open={open} handleOpen={handleDrawerOpen} user={user} />
-      <Sidebar open={open} handleClose={handleDrawerClose} />
+      <Sidebar open={open} handleClose={handleDrawerClose} user={user} />
       <main className={classes.main}>
         <Box className={classes.toolbar} />
         <Box className={classes.content}>{children}</Box>
       </main>
-    </div>
+    </Box>
   );
 }

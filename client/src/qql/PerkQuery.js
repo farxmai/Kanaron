@@ -1,8 +1,8 @@
-import gql from "graphql-tag";
-import { perk, skill, spell } from "./QueryConstants";
+import { gql } from "@apollo/client";
+import { CORE_PERK_FIELDS, MAIN_FIELDS } from "./Fragments";
 
 export const GET_ALL_PERKS_QUERY = gql`
-  query {
+  query GetPerks {
     perks {
       id
       title
@@ -12,9 +12,9 @@ export const GET_ALL_PERKS_QUERY = gql`
 
 export const GET_PERK_QUERY = gql`
   query GetPerkQuery($id: String!) {
-    perk(id: $id) { ${perk} }
-    skills { ${skill} }
-    spells { ${spell} }
+    perk(id: $id) { ${CORE_PERK_FIELDS} }
+    skills { ${MAIN_FIELDS} }
+    spells { ${MAIN_FIELDS} }
   }
 `;
 
@@ -36,7 +36,6 @@ export const UPDATE_PERK_MUTATION = gql`
       spells: $spells
     ) {
       id
-      title
     }
   }
 `;
@@ -57,7 +56,6 @@ export const CREATE_PERK_MUTATION = gql`
       spells: $spells
     ) {
       id
-      title
     }
   }
 `;

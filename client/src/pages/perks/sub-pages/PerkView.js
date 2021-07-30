@@ -1,6 +1,6 @@
 import React from "react";
 import { EditButton } from "../../../components/buttons/EditButton";
-import Attributes from "../../../components/tables/Attributes";
+// import Attributes from "../../../components/tables/Attributes";
 
 const PerkView = ({ data, setEdit }) => (
   <div className="d-flex flex-column flex-md-row">
@@ -13,7 +13,7 @@ const PerkView = ({ data, setEdit }) => (
         <b>Описание: </b>
         {data.description}
       </p>
-      {data.skills.length ? (
+      {/* {data.skills.length ? (
         <div>
           <h3>Навыки</h3>
           <hr />
@@ -30,9 +30,9 @@ const PerkView = ({ data, setEdit }) => (
             <p>{spell.title} </p>
           ))}
         </div>
-      ) : null}
+      ) : null} */}
     </div>
-    <Attributes attributes={data.attributes} />
+    {/* <Attributes attributes={data.attributes} /> */}
   </div>
 );
 

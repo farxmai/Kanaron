@@ -7,6 +7,8 @@ const ClassSchema = new Schema(
     title: String,
     imgLink: String,
     description: String,
+    icon: String,
+    hpDice: { type: Number, default: 6 },
     attributes: Attributes,
     skills: [{ type: Schema.Types.ObjectId, ref: "Skill" }],
     spells: [{ type: Schema.Types.ObjectId, ref: "Spell" }],

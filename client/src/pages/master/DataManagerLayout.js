@@ -1,6 +1,6 @@
 import React from "react";
-import { Query } from "react-apollo";
-import DataManager from "./DataManager";
+import { Query } from "@apollo/client";
+import DataManager from "./DatasetManager";
 import { GET_ALL_STAFF_QUERY } from "../../qql/MasterPageQuery";
 
 const DataManagerLayout = ({ user }) => (

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import { Mutation } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { userLogIn } from "../../services/authHandlers";
 import "./Login.css";
 import { Box, Button, Card, Typography } from "@material-ui/core";

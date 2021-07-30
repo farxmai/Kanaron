@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { GET_RACE_QUERY } from "qql/RaceQuery";
 import RaceView from "./sub-pages/RaceView";
 import RaceEdit from "./sub-pages/RaceEdit";
-import QueryLayout from "../../components/layouts/QueryLayout";
-import { GET_RACE_QUERY } from "../../qql/RaceParams";
+import QueryLayout from "components/layouts/QueryLayout";
 
 const Race = (props) => {
   const [edit, setEdit] = useState(false);

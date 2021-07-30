@@ -3,19 +3,27 @@ const Attributes = require("./AttributesModel");
 const Schema = mongoose.Schema;
 
 const Weapon = new Schema({
-  itemType: { type: String, default: "Weapon", immutable: true },
-  type: { type: String, enum: ["melee", "range", "throwing", "magic"] },
-  damageType: {
+  itemType: { type: String, default: "Weapon" },
+  type: {
     type: String,
     enum: [
-      null,
-      "stabbing",
-      "crushing",
-      "chopping",
-      "magical",
-      "mental",
-      "subdual",
+      "long_sword",
+      "short_sword",
+      "dagger",
+      "long_bow",
+      "short_bow",
+      "crossbow",
+      "hammer",
+      "spear",
+      "cudgel",
+      "axe",
+      "other",
     ],
+  },
+  attackType: { type: String, enum: ["melee", "range", "throwing", "magic"] },
+  damageType: {
+    type: String,
+    enum: [null, "stabbing", "crushing", "chopping", "magical", "mental", "stressful"],
     default: null,
   },
   additionalProperties: Object,
@@ -29,26 +37,17 @@ const Weapon = new Schema({
 });
 
 const Armor = new Schema({
-  itemType: { type: String, default: "Armor", immutable: true },
+  itemType: { type: String, default: "Armor" },
   type: {
     type: String,
-    enum: [
-      "armor",
-      "helmet",
-      "belt",
-      "coat",
-      "bag",
-      "clothes",
-      "boots",
-      "other",
-    ],
+    enum: ["armor", "helmet", "belt", "coat", "bag", "clothes", "boots", "other"],
   },
   additionalProperties: Object,
   baseDefense: Number,
 });
 
 const Accessor = new Schema({
-  itemType: { type: String, default: "Accessor", immutable: true },
+  itemType: { type: String, default: "Accessor" },
   type: {
     type: String,
     enum: ["amulet", "ring", "talisman", "artefact", "other"],
@@ -57,21 +56,21 @@ const Accessor = new Schema({
 });
 
 const Consumable = new Schema({
-  itemType: { type: String, default: "Consumable", immutable: true },
+  itemType: { type: String, default: "Consumable" },
   type: { type: String, enum: ["potion", "food", "drink", "other"] },
   additionalProperties: Object,
   effect: String,
 });
 
 const Ammo = new Schema({
-  itemType: { type: String, default: "Ammo", immutable: true },
+  itemType: { type: String, default: "Ammo" },
   baseAttack: Number,
   attackRange: Number,
   stackSize: Number,
-  effectDescription: String,
+  effect: String,
   damageType: {
     type: String,
-    enum: ["stabbing", "crushing", "chopping", "magical", "mental", "subdual"],
+    enum: ["stabbing", "crushing", "chopping", "magical", "mental", "stressful"],
   },
   effectType: {
     type: String,

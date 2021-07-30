@@ -1,9 +1,12 @@
+import { user } from "cache";
 import jwt from "jsonwebtoken";
 import { AUTH_TOKEN, AUTH_TOKEN_SECRET } from "../constants";
 
 export const userLogIn = (token) => {
   localStorage.setItem(AUTH_TOKEN, token);
-  window.location.pathname = "/dashboard/profile";
+  const userData = tokenParser(token);
+  user(userData);
+  // window.location.pathname = "/dashboard/profile";
 };
 
 export const userLogOut = () => {

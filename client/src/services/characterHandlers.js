@@ -1,6 +1,6 @@
 /* eslint-disable arrow-body-style */
 
-import { attributesTranslate } from "../components/translate/dictionary";
+import { attributesTranslate } from "../translate/dictionary";
 
 export const prepareEquipData = (equipment) => {
   const res = {};
@@ -13,10 +13,7 @@ export const prepareEquipData = (equipment) => {
         known: true,
       }));
     }
-    if (
-      typeof equipment[key] === "object" &&
-      Object.keys(equipment[key]).length
-    ) {
+    if (typeof equipment[key] === "object" && Object.keys(equipment[key]).length) {
       res[key] = {
         item: equipment[key].id,
         quantity: 1,
@@ -45,18 +42,11 @@ export const getHealthPoints = (base, lvl, getAttribute) =>
   base + +lvl * getAttribute("Constitution");
 
 export const getDodge = (lvl, getAttribute) => {
-  return Math.round(
-    +lvl + (getAttribute("Agility") + getAttribute("Perception") / 2)
-  );
+  return Math.round(+lvl + (getAttribute("Agility") + getAttribute("Perception") / 2));
 };
 
 export const getHandAttack = (lvl, getAttribute, mainAttrib) => {
-  return (
-    +lvl +
-    (mainAttrib.eng === "Agility"
-      ? getAttribute("Agility")
-      : getAttribute("Strength"))
-  );
+  return +lvl + (mainAttrib.eng === "Agility" ? getAttribute("Agility") : getAttribute("Strength"));
 };
 
 export const getMageAttack = (lvl, getAttribute, mainAttrib) =>
@@ -83,9 +73,7 @@ export const getDefaultEquip = (items) => {
 };
 
 export const getInitMainAttrib = (init) =>
-  init
-    ? attributesTranslate.find((el) => el.eng === init.mainAttribute)
-    : attributesTranslate[0];
+  init ? attributesTranslate.find((el) => el.eng === init.mainAttribute) : attributesTranslate[0];
 
 export const getInitEquip = (init, items) => {
   if (init) {
@@ -110,9 +98,7 @@ export const getInitClass = (init, classes) =>
 export const getInitSkills = (init, c_race, c_class) => {
   if (init) {
     const reserveIds = [...c_race.skills, c_class.skills].map((el) => el.id);
-    return init.skills
-      .map((el) => el.skill)
-      .filter((el) => !reserveIds.includes(el.id));
+    return init.skills.map((el) => el.skill).filter((el) => !reserveIds.includes(el.id));
   }
   return [];
 };

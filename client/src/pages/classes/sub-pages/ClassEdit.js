@@ -1,203 +1,179 @@
-/* eslint-disable object-curly-newline */
-import React, { useState } from "react";
-import { Table } from "react-bootstrap";
-import { Mutation } from "react-apollo";
+import { useState } from "react";
+import { useMutation } from "@apollo/client";
 import { useHistory } from "react-router";
-import { attributesTranslate } from "../../../components/translate/dictionary";
+import { Grid } from "@material-ui/core";
+
 import {
   UPDATE_CLASS_MUTATION,
   CREATE_CLASS_MUTATION,
-} from "../../../qql/ClassParams";
-import {
-  HeaderRow,
-  InputRow,
-  NumberRow,
-  TextAreaRow,
-  SubmitRow,
-  ButtonRow,
-  CheckListRow,
-} from "../../../components/tables/FormRows";
+  GET_CLASS_QUERY,
+  DELETE_CLASS_MUTATION,
+} from "qql/ClassQuery";
+import { GET_SELECTED_LISTS_QUERY } from "qql/GlobalQueries";
 
-const defAttributes = {
-  Agility: 0,
-  Charisma: 0,
-  Constitution: 0,
-  Intelligence: 0,
-  Perception: 0,
-  Spirit: 0,
-  Strength: 0,
-};
+import { dices } from "constants/dices";
+import { getDefaultState } from "helpers/getDefaultState";
+import { FormTitle } from "components/forms/elements";
+import QueryLayout from "components/layouts/QueryLayout";
+import { DeleteButtonLarge, SaveButton } from "components/buttons";
+import { AttributesForm, IconForm, DynamicForm } from "components/forms";
 
 const ClassEdit = ({
-  data,
+  class: data,
   skills: skillsList,
   spells: spellsList,
   perks: perksList,
   setEdit,
 }) => {
-  const [title, setTitle] = useState(data?.title || "");
-  const [imgLink, setImgLink] = useState(data?.imgLink || "");
-  const [description, setDescription] = useState(data?.description || "");
-  const [skills, setSkills] = useState(data?.skills || []);
-  const [spells, setSpells] = useState(data?.spells || []);
-  const [perks, setPerks] = useState(data?.perks || []);
+  const history = useHistory();
+  const id = data?.id || null;
+  const [values, setValues] = useState(data || getDefaultState("class"));
 
-  const [withAttributes, setWithAttributes] = useState(false);
-  const [attributes, setAttributes] = useState(
-    data?.attributes || defAttributes
+  const [mutation, { loading, error }] = useMutation(
+    id ? UPDATE_CLASS_MUTATION : CREATE_CLASS_MUTATION,
+    {
+      onCompleted: (res) =>
+        id ? setEdit() : history.push(`/classes/${res.addClass.id}`),
+      refetchQueries: id
+        ? [{ query: GET_CLASS_QUERY, variables: { id } }]
+        : null,
+      onError: (err) => alert(err.message),
+    }
   );
 
-  const history = useHistory();
+  const [remove, { loading: removing }] = useMutation(DELETE_CLASS_MUTATION, {
+    onCompleted: (res) => history.push(`/classes`),
+    onError: (err) => alert(err.message),
+  });
 
-  const setAttrib = (type, value) =>
-    setAttributes({
-      ...attributes,
+  const setCurrentValue = (type, value) =>
+    setValues({
+      ...values,
       [type]: value,
     });
 
-  const isInList = (searchArr, value) => {
-    const index = searchArr.findIndex((el) => el.id === value.id);
-    if (index === -1) return false;
-    return true;
-  };
+  const setAttribute = (type, value) =>
+    setValues({
+      ...values,
+      attributes: {
+        ...values.attributes,
+        [type]: value,
+      },
+    });
 
-  const handleSetValue = (searchArr, value, callback) => {
-    const index = searchArr.findIndex((el) => el.id === value.id);
-    console.log(index);
-    const newArr = [...searchArr];
-    if (index === -1) newArr.push(value);
-    else newArr.splice(index, 1);
-    callback(newArr);
-  };
+  const setIcon = (value) =>
+    setValues({
+      ...values,
+      icon: value,
+    });
 
-  const prepareRequestData = (id) => ({
-    id,
-    title,
-    imgLink,
-    description,
-    attributes,
-    skills: skills.map((skill) => skill.id),
-    spells: spells.map((spell) => spell.id),
-    perks: perks.map((perk) => perk.id),
-  });
-
-  const fields = [
+  const infoFields = [
     {
+      type: "input",
+      field: "title",
       label: "Название",
-      component: InputRow,
-      value: title,
-      onChange: setTitle,
     },
     {
+      type: "input",
+      field: "imgLink",
       label: "Изображение",
-      component: InputRow,
-      value: imgLink,
-      onChange: setImgLink,
     },
     {
-      label: "Общее описание",
-      component: TextAreaRow,
-      value: description,
-      onChange: setDescription,
+      type: "radio",
+      field: "hpDice",
+      label: "Кубик ХП",
+      options: dices,
     },
     {
-      label: "Бонусные навыки",
-      component: CheckListRow,
-      array: skillsList,
-      onChange: (val) => handleSetValue(skills, val, setSkills),
-      isInArray: (val) => isInList(skills, val),
-    },
-    {
-      label: "Бонусные заклинания",
-      component: CheckListRow,
-      array: spellsList,
-      onChange: (val) => handleSetValue(spells, val, setSpells),
-      isInArray: (val) => isInList(spells, val),
-    },
-    {
-      label: "Бонусные перки",
-      component: CheckListRow,
-      array: perksList,
-      onChange: (val) => handleSetValue(perks, val, setPerks),
-      isInArray: (val) => isInList(perks, val),
+      type: "text",
+      field: "description",
+      label: "Описание",
     },
   ];
 
-  const attribFields = attributesTranslate.map((el) => ({
-    label: el.ru,
-    component: NumberRow,
-    value: attributes[el.eng],
-    onChange: (val) => setAttrib(el.eng, val),
-  }));
+  const bonusFields = [
+    {
+      type: "multiselect",
+      field: "skills",
+      label: "Бонусные навыки",
+      options: skillsList,
+    },
+    {
+      type: "multiselect",
+      field: "spells",
+      label: "Бонусные заклинания",
+      options: spellsList,
+    },
+    {
+      type: "multiselect",
+      field: "perks",
+      label: "Бонусные перки",
+      options: perksList,
+    },
+  ];
+
+  const requestData = {
+    variables: {
+      ...values,
+      skills: values.skills.map((el) => el.id),
+      spells: values.spells.map((el) => el.id),
+      perks: values.perks.map((el) => el.id),
+    },
+  };
 
   return (
-    <Mutation
-      mutation={data?.id ? UPDATE_CLASS_MUTATION : CREATE_CLASS_MUTATION}
-      variables={prepareRequestData(data?.id)}
-      onCompleted={(res) =>
-        res?.addClass?.id
-          ? history.push(`/classes/${res.addClass.id}`)
-          : window.location.reload()
-      }
-      onError={(err) => console.log(err)}
-    >
-      {(mutation) => (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            mutation();
-          }}
-        >
-          <Table striped bordered hover variant="dark">
-            <thead>
-              {setEdit ? (
-                <HeaderRow label="Редактирование" setEdit={setEdit} />
-              ) : (
-                <HeaderRow label="Создание" />
-              )}
-            </thead>
-            <tbody>
-              {fields.map(
-                ({
-                  label,
-                  component: Component,
-                  value,
-                  onChange,
-                  array,
-                  isInArray,
-                }) => (
-                  <Component
-                    label={label}
-                    onChange={onChange}
-                    value={value}
-                    array={array}
-                    isInArray={isInArray}
-                  />
-                )
-              )}
-              <ButtonRow
-                open={withAttributes}
-                onClick={() => setWithAttributes(!withAttributes)}
-                label="Бонус атрибутов"
-              />
-              {withAttributes &&
-                attribFields.map(
-                  ({ label, component: Component, value, onChange, array }) => (
-                    <Component
-                      label={label}
-                      onChange={onChange}
-                      value={value}
-                      array={array}
-                    />
-                  )
-                )}
-              <SubmitRow back={setEdit} />
-            </tbody>
-          </Table>
-        </form>
-      )}
-    </Mutation>
+    <Grid container spacing={1}>
+      <Grid item xs={12}>
+        <FormTitle
+          title={`${id ? "Редактирование" : "Создание"} Класса`}
+          onEdit={setEdit}
+        />
+      </Grid>
+      <Grid item xs={12} md={8}>
+        <DynamicForm
+          title="Базовая информация"
+          fields={infoFields}
+          values={values}
+          setValues={setCurrentValue}
+        />
+        <DynamicForm
+          title="Бонусы"
+          fields={bonusFields}
+          values={values}
+          setValues={setCurrentValue}
+        />
+      </Grid>
+      <Grid item xs={12} md={4}>
+        <AttributesForm
+          attributes={values.attributes}
+          setAttribute={setAttribute}
+        />
+        <IconForm value={values.icon} setValue={setIcon} />
+        {id && (
+          <DeleteButtonLarge
+            onDelete={() => remove({ variables: { id } })}
+            loading={loading || removing}
+          />
+        )}
+      </Grid>
+      <Grid item xs={12}>
+        <SaveButton
+          onClick={() => mutation(requestData)}
+          loading={loading || removing}
+          error={error}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
-export default ClassEdit;
+const ClassEditWrapper = (props) => (
+  <QueryLayout
+    query={GET_SELECTED_LISTS_QUERY}
+    Component={ClassEdit}
+    fetchPolicy="cache-first"
+    {...props}
+  />
+);
+
+export default ClassEditWrapper;

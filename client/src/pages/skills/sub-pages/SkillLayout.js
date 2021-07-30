@@ -1,6 +1,6 @@
 import React from "react";
-import { Query } from "react-apollo";
-import { GET_SKILL_QUERY } from "../../../qql/SkillParams";
+import { Query } from "@apollo/client";
+import { GET_SKILL_QUERY } from "../../../qql/SkillQuery";
 
 const SkillLayout = ({ id, component: Component, setEdit }) => (
   <Query query={GET_SKILL_QUERY} variables={{ id }}>

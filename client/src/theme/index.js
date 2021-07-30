@@ -1,3 +1,6 @@
+import { getShadows, getCustomShadows } from "./shadows";
+import palette from "./palette";
+import { getOverrides } from "./overrides";
 import { useMemo } from "react";
 import { CssBaseline } from "@material-ui/core";
 import {
@@ -5,10 +8,6 @@ import {
   createMuiTheme,
 } from "@material-ui/core/styles";
 import StyledEngineProvider from "@material-ui/core/StyledEngineProvider";
-
-import palette from "./palette";
-import { getShadows, getCustomShadows } from "./shadows";
-import { getOverrides } from "./overrides";
 
 export default function ThemeProvider({ children }) {
   const isLight = false;
@@ -32,6 +31,8 @@ export default function ThemeProvider({ children }) {
 
   const theme = createMuiTheme(themeOptions);
   theme.components = getOverrides(theme);
+
+  const dfdf = 1;
 
   return (
     <StyledEngineProvider injectFirst>

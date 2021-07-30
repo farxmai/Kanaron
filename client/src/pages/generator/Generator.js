@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useState } from "react";
-import { Mutation } from "react-apollo";
+import { Mutation } from "@apollo/client";
 import {
   CREATE_CHARACTER_MUTATION,
   UPDATE_CHARACTER_MUTATION,
@@ -14,7 +14,7 @@ import {
   CharacterInventory,
   CharacterSubmit,
 } from "../../components/tables/CharacterTables";
-import Attributes from "../../components/tables/Attributes";
+// import Attributes from "../../components/tables/Attributes";
 import Loader from "../../components/loader/Loader";
 import { defAttributes } from "../../def-states";
 import {
@@ -213,14 +213,14 @@ const Generator = (props) => {
               </div>
 
               <div className="col-12 col-lg-4">
-                <Attributes
+                {/* <Attributes
                   isEdit
                   limit={attribLimit}
                   selfAttributes={attributes}
                   setValue={handleSetAttribute}
                   variant="dark"
                   getAttribute={getAttrib}
-                />
+                /> */}
                 <CharacterAttacks attacks={attacks} />
                 <CharacterEquipment
                   equipment={equipment}

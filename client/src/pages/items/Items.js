@@ -1,42 +1,37 @@
-import React from "react";
-import { Query } from "react-apollo";
 import { Link } from "react-router-dom";
-import { GET_ALL_ITEMS_QUERY } from "../../qql/ItemParams";
-import { itemTypesTranslate } from "../../components/translate/dictionary";
+import { Card, Divider, Grid, List, ListItem, Typography } from "@material-ui/core";
+import QueryLayout from "components/layouts/QueryLayout";
+import { GET_ALL_ITEMS_QUERY } from "qql/ItemQuery";
+import { formatCurrentItems, formatItemsByGroups, getItemTypeLabel } from "helpers/items";
+import { QualityIndicator } from "components/elements/QualityIndicator";
 
-const Items = () => (
-  <Query query={GET_ALL_ITEMS_QUERY}>
-    {({ loading, error, data }) => {
-      console.log(loading, error, data);
-      if (loading) return <p>Loading...</p>;
-      if (error) return <p>Error :(</p>;
-
-      const byTypes = {};
-      data.items.forEach((el) => {
-        if (!byTypes[el.type]) byTypes[el.type] = [el];
-        else byTypes[el.type].push(el);
-      });
-
-      console.log(byTypes);
-
-      return (
-        <div className="d-flex flex-wrap">
-          {itemTypesTranslate.map(({ eng, ru }) => (
-            <ul className="col-6">
-              <div className="mb-2">
-                <b>{ru}</b>
-              </div>
-              {byTypes[eng]?.map((el) => (
-                <li>
-                  <Link to={`item-types/${el.id}`}>{el.title}</Link>{" "}
-                </li>
+const ItemsComponent = ({ currentItems }) => {
+  const items = formatCurrentItems(currentItems);
+  const itemsGroups = formatItemsByGroups(items);
+  return (
+    <Grid container spacing={1}>
+      {Object.keys(itemsGroups).map((group) => (
+        <Grid item>
+          <Card variant='bordered' sx={{ p: 1 }}>
+            <Typography variant='h4' gutterBottom>
+              {getItemTypeLabel(group)}
+            </Typography>
+            <Divider />
+            <List>
+              {itemsGroups[group].map(({ id, title, color }, i) => (
+                <ListItem button component={(props) => <Link to={`items/${id}`} {...props} />}>
+                  <QualityIndicator color={color} />
+                  <Typography>{title}</Typography>
+                </ListItem>
               ))}
-            </ul>
-          ))}
-        </div>
-      );
-    }}
-  </Query>
-);
+            </List>
+          </Card>
+        </Grid>
+      ))}
+    </Grid>
+  );
+};
+
+const Items = () => <QueryLayout query={GET_ALL_ITEMS_QUERY} Component={ItemsComponent} />;
 
 export default Items;

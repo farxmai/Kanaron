@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useRef } from "react";
 import "./DiceGenerator.css";
 import d4 from "../../img/d4.png";
@@ -108,7 +107,7 @@ export const DiceModalWindow = ({ init = [], onClose, sides = 20 }) => {
         {openSubs && withInitial && (
           <div className="dice-init-value-list">
             {initial.map((el) => (
-              <div>{`${el.value} +`}</div>
+              <div key={el.value}>{`${el.value} +`}</div>
             ))}
           </div>
         )}

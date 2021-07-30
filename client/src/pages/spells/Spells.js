@@ -1,5 +1,5 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { Query } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { GET_ALL_SPELLS_QUERY } from "../../qql/SpellQuery";
 
@@ -10,11 +10,11 @@ const Spells = () => (
       if (error) return <p>Error :(</p>;
       return (
         <div className="d-flex flex-wrap">
-          {data.spells.map((el) => (
+          {/* {data.spells.map((el) => (
             <li>
               <Link to={`spells/${el.id}`}>{el.title}</Link>{" "}
             </li>
-          ))}
+          ))} */}
         </div>
       );
     }}

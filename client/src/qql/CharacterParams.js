@@ -1,11 +1,11 @@
-import gql from "graphql-tag";
+import { gql } from "@apollo/client";
 import {
-  attributes,
-  inventoryItem,
-  perk,
-  skill,
-  spell,
-} from "./QueryConstants";
+  ATTRIBUTES_FIELDS,
+  CORE_INVENTORY_ITEM_FIELDS,
+  CORE_PERK_FIELDS,
+  CORE_SKILL_FIELDS,
+  CORE_SPELL_FIELDS,
+} from "./Fragments";
 
 export const GET_USER_CHARACTERS_QUERY = gql`
   query GetUserCharactersQuery($id: String!) {
@@ -44,49 +44,49 @@ export const GET_CHARACTER_QUERY = gql`
       hp
       mp
       mainAttribute
-      attributes { ${attributes} }
+      attributes { ${ATTRIBUTES_FIELDS} }
       inventory {
         id
         items {
-          ${inventoryItem}
+          ${CORE_INVENTORY_ITEM_FIELDS}
         }
         equip {
-          weapon1{ ${inventoryItem} }
-          weapon2{ ${inventoryItem} }
-          weapon3{ ${inventoryItem} }
-          weapon4{ ${inventoryItem} }
-          armor{ ${inventoryItem} }
-          helmet{ ${inventoryItem} }
-          belt{ ${inventoryItem} }
-          coat{ ${inventoryItem} }
-          bag{ ${inventoryItem} }
-          boots{ ${inventoryItem} }
-          amulet{ ${inventoryItem} }
-          rings{ ${inventoryItem} }
-          pockets{ ${inventoryItem} }
+          weapon1{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          weapon2{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          weapon3{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          weapon4{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          armor{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          helmet{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          belt{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          coat{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          bag{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          boots{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          amulet{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          rings{ ${CORE_INVENTORY_ITEM_FIELDS} }
+          pockets{ ${CORE_INVENTORY_ITEM_FIELDS} }
         }
         storages {
           title
           items {
-            ${inventoryItem}
+            ${CORE_INVENTORY_ITEM_FIELDS}
           }
         }
       }
       skills {
-        skill { ${skill} }
+        skill { ${CORE_SKILL_FIELDS} }
         lvl
       }
-      spells { ${spell} }
-      perks { ${perk} }
+      spells { ${CORE_SPELL_FIELDS} }
+      perks { ${CORE_PERK_FIELDS} }
       race {
         id
         title
-        attributes { ${attributes} }
+        attributes { ${ATTRIBUTES_FIELDS} }
       }
       class {
         id
         title
-        attributes { ${attributes} }
+        attributes { ${ATTRIBUTES_FIELDS} }
       }
     }
   }

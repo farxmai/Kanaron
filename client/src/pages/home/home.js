@@ -1,7 +1,9 @@
+import { user } from "cache";
 import React from "react";
 import DiceGenerator from "../../components/dices/DiceGenerator";
 
 const HomePage = () => {
+  console.log(user());
   return (
     <div>
       {/* <DiceGenerator /> */}

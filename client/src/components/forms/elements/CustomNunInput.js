@@ -3,18 +3,7 @@ import { TextField, Box, Typography } from "@material-ui/core";
 import { useState } from "react";
 
 const getWidthByLength = (length) => {
-  switch (length) {
-    case 1:
-      return 7;
-    case 2:
-      return 17;
-    case 3:
-      return 27;
-    case 4:
-      return 37;
-    default:
-      return 37;
-  }
+  return length * 10 - 3;
 };
 
 const InputWrapper = styled(Box)(() => ({
@@ -27,8 +16,7 @@ const InputWrapper = styled(Box)(() => ({
 export const CustomNunInput = ({ label, length = 2, onChange, ...rest }) => {
   const [focus, setFocus] = useState(false);
 
-  const getColor = (theme) =>
-    focus ? theme.palette.secondary.main : theme.palette.grey[500];
+  const getColor = (theme) => (focus ? theme.palette.secondary.main : theme.palette.grey[500]);
   const handleChange = (e) => {
     const str = `${e.target.value}`;
     if (str.length <= length && +str >= 0) {
@@ -37,7 +25,7 @@ export const CustomNunInput = ({ label, length = 2, onChange, ...rest }) => {
   };
 
   return (
-    <InputWrapper sx={{ px: 1 }}>
+    <InputWrapper sx={{ px: 1, mb: 1 }}>
       <Typography
         sx={{
           color: getColor,
@@ -53,8 +41,8 @@ export const CustomNunInput = ({ label, length = 2, onChange, ...rest }) => {
         onChange={handleChange}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        variant="standard"
-        type="number"
+        variant='standard'
+        type='number'
       />
     </InputWrapper>
   );

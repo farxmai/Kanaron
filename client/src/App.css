@@ -4,3 +4,8 @@ body {
   background-size: initial;
   background-attachment: fixed;
 }
+
+a {
+  color: white;
+  text-decoration: none !important;
+}

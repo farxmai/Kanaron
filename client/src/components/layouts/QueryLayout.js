@@ -1,16 +1,15 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
-import { Query } from "react-apollo";
+import { useQuery } from "@apollo/client";
 import Loader from "../loader/Loader";
 
-const QueryLayout = ({ query, variables, Component, ...rest }) => (
-  <Query query={query} variables={variables}>
-    {({ loading, error, data }) => {
-      if (loading) return <Loader />;
-      if (error) return <Redirect to={"/404"} />;
-      return <Component {...data} {...rest} />;
-    }}
-  </Query>
-);
+const QueryLayout = ({ query, variables, Component, fetchPolicy, ...rest }) => {
+  const { loading, error, data, refetch } = useQuery(query, {
+    variables,
+    fetchPolicy: fetchPolicy || "cache-and-network",
+  });
+  if (loading) return <Loader />;
+  if (error) return <>{error.message}</>;
+  return <Component {...data} {...rest} refetch={refetch} />;
+};
 
 export default QueryLayout;

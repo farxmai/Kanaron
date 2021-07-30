@@ -6,7 +6,7 @@ const QualitySchema = new Schema({
   description: String,
   type: String,
   index: Number,
-  additionalProperties: Object,
+  color: { type: String, default: "#919EAB" },
 });
 
 const Quality = mongoose.model("Quality", QualitySchema);

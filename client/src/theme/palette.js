@@ -1,3 +1,4 @@
+import { green } from "@material-ui/core/colors";
 import { alpha } from "@material-ui/core/styles";
 
 export const GREY = {
@@ -25,11 +26,11 @@ function createGradient(color1, color2) {
   return `linear-gradient(to bottom, ${color1}, ${color2})`;
 }
 const PRIMARY = {
-  lighter: "#495057",
-  light: "#495057",
+  lighter: GREY[600],
+  light: GREY[700],
   main: GREY[800],
-  dark: "#212529",
-  darker: "#212529",
+  dark: GREY[900],
+  darker: GREY[900],
 };
 const SECONDARY = {
   lighter: "#fbf2e1",
@@ -46,11 +47,11 @@ const INFO = {
   darker: "#04297A",
 };
 const SUCCESS = {
-  lighter: "#E9FCD4",
-  light: "#AAF27F",
-  main: "#54D62C",
-  dark: "#229A16",
-  darker: "#08660D",
+  lighter: green[400],
+  light: green[500],
+  main: green[600],
+  dark: green[700],
+  darker: green[800],
 };
 const WARNING = {
   lighter: "#FFF7CD",

@@ -1,16 +1,14 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import { ImageCard } from "../../components/cards/ImageCard";
-import { GET_ALL_RACES_QUERY } from "../../qql/RaceParams";
-
-import QueryLayout from "../../components/layouts/QueryLayout";
-import { FlexWrapped } from "../../components/directions/directions";
+import { GET_ALL_RACES_QUERY } from "qql/RaceQuery";
+import { FlexWrapped } from "components/directions";
+import { ImageCard } from "components/cards";
+import QueryLayout from "components/layouts/QueryLayout";
 
 const RacesComponent = ({ races }) => (
   <FlexWrapped>
-    {races.map((a) => (
-      <Link to={`races/${a.id}`}>
-        <ImageCard text={a.title} url={a.imgLink} />
+    {races.map(({ id, title, imgLink }) => (
+      <Link key={id} to={`races/${id}`}>
+        <ImageCard title={title} src={imgLink} withTitle />
       </Link>
     ))}
   </FlexWrapped>

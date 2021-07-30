@@ -53,6 +53,8 @@ const Header = ({ user, handleOpen, open }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const history = useHistory();
 
+  const isMaster = user?.permission === "master";
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -127,8 +129,9 @@ const Header = ({ user, handleOpen, open }) => {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                {navbarLinks.map(({ link, label, Icon }) => (
+                {navbarLinks.map(({ link, label, Icon }, i) => (
                   <MenuItem
+                    key={i}
                     onClick={() => {
                       history.push(link);
                       handleClose();
@@ -140,10 +143,11 @@ const Header = ({ user, handleOpen, open }) => {
                     <ListItemText primary={label} />
                   </MenuItem>
                 ))}
-                {user.permission === "master" && <Divider />}
-                {user.permission === "master" &&
-                  navbarMasterLinks.map(({ link, label, Icon }) => (
+                {isMaster && <Divider />}
+                {isMaster &&
+                  navbarMasterLinks.map(({ link, label, Icon }, i) => (
                     <MenuItem
+                      key={i}
                       onClick={() => {
                         history.push(link);
                         handleClose();

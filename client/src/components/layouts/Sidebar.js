@@ -17,12 +17,34 @@ import {
 
 import { useLayoutStyles } from "./styles";
 import clsx from "clsx";
-import { sidebarLinks } from "./links";
+import { sidebarLinks, sidebarMasterLinks } from "./links";
 
-export default function Sidebar({ open, handleClose }) {
+export default function Sidebar({ open, handleClose, user }) {
   const classes = useLayoutStyles();
   const theme = useTheme();
   const history = useHistory();
+
+  const isMaster = user?.permission === "master";
+
+  const LinksList = ({ links }) => (
+    <List>
+      {links.map(({ link, label, Icon }, index) => (
+        <ListItem
+          button
+          key={index}
+          onClick={() => {
+            handleClose();
+            history.push(link);
+          }}
+        >
+          <ListItemIcon sx={{ minWidth: 50 }}>
+            <Icon />
+          </ListItemIcon>
+          <ListItemText primary={label} />
+        </ListItem>
+      ))}
+    </List>
+  );
 
   return (
     <Drawer
@@ -48,24 +70,9 @@ export default function Sidebar({ open, handleClose }) {
         </IconButton>
       </Box>
       <Divider />
-      <List>
-        {sidebarLinks.map(({ link, label, Icon }, index) => (
-          <ListItem
-            button
-            key={index}
-            onClick={() => {
-              handleClose();
-              history.push(link);
-            }}
-          >
-            <ListItemIcon sx={{ minWidth: 50 }}>
-              <Icon />
-            </ListItemIcon>
-            <ListItemText primary={label} />
-          </ListItem>
-        ))}
-      </List>
+      <LinksList links={sidebarLinks} />
       <Divider />
+      {isMaster && <LinksList links={sidebarMasterLinks} />}
     </Drawer>
   );
 }
