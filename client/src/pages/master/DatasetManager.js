@@ -20,6 +20,12 @@ import { FlexBetween } from "components/directions";
 import { Add, ExpandMore } from "@material-ui/icons";
 import { MAIN_PATHS } from "router/paths";
 import { QualityIndicator } from "components/elements/QualityIndicator";
+import {
+  formatCurrentItems,
+  formatItemsByGroups,
+  getItemTypeLabel,
+  getMaterialTypeLabel,
+} from "helpers/items";
 
 const DatasetManagerComponent = ({
   races,
@@ -44,12 +50,30 @@ const DatasetManagerComponent = ({
         {
           label: "Предметы",
           url: MAIN_PATHS.items,
-          array: currentItems.map((el) => ({
-            id: el.id,
-            title: `${el.item.title} (${el.material.title})`,
-            color: el.quality.color,
-          })),
+          array: formatItemsByGroups(formatCurrentItems(currentItems)),
+          getLabel: getItemTypeLabel,
+          grouped: true,
         },
+      ],
+    },
+    {
+      title: "Разработка предметов",
+      list: [
+        {
+          array: formatItemsByGroups(items),
+          getLabel: getItemTypeLabel,
+          grouped: true,
+          label: "Типы предметов",
+          url: MAIN_PATHS.itemsTypes,
+        },
+        {
+          array: formatItemsByGroups(materials),
+          getLabel: getMaterialTypeLabel,
+          grouped: true,
+          label: "Материалы",
+          url: MAIN_PATHS.itemsMaterials,
+        },
+        { array: qualities, label: "Качества", url: MAIN_PATHS.itemsQualities },
       ],
     },
   ];
@@ -93,19 +117,45 @@ const DatasetManagerComponent = ({
                     </AccordionSummary>
                     <Divider />
                     <AccordionDetails sx={{ p: 0 }}>
-                      <List>
-                        {category.array?.map((el) => (
-                          <ListItem
-                            button
-                            component={(props) => (
-                              <Link to={`${category.url}/${el.id}`} {...props} />
-                            )}
-                          >
-                            {el.color && <QualityIndicator color={el.color} />}
-                            <ListItemText>{el.title}</ListItemText>
-                          </ListItem>
-                        ))}
-                      </List>
+                      {category.grouped ? (
+                        Object.keys(category.array).map((group) => (
+                          <List>
+                            <Typography
+                              variant='h6'
+                              gutterBottom
+                              sx={{ px: 2, color: (t) => t.palette.grey[500] }}
+                            >
+                              {category.getLabel(group)}
+                            </Typography>
+                            <Divider />
+                            {category.array[group]?.map((el) => (
+                              <ListItem
+                                button
+                                component={(props) => (
+                                  <Link to={`${category.url}/${el.id}`} {...props} />
+                                )}
+                              >
+                                {el.color && <QualityIndicator color={el.color} />}
+                                <ListItemText>{el.title}</ListItemText>
+                              </ListItem>
+                            ))}
+                          </List>
+                        ))
+                      ) : (
+                        <List>
+                          {category.array?.map((el) => (
+                            <ListItem
+                              button
+                              component={(props) => (
+                                <Link to={`${category.url}/${el.id}`} {...props} />
+                              )}
+                            >
+                              {el.color && <QualityIndicator color={el.color} />}
+                              <ListItemText>{el.title}</ListItemText>
+                            </ListItem>
+                          ))}
+                        </List>
+                      )}
                     </AccordionDetails>
                   </Accordion>
                 </Card>

@@ -24,7 +24,9 @@ export const GET_ALL_STAFF_QUERY = gql`
     }
     currentItems {
       id
+      title
       item {
+        type
         title
       }
       material {
@@ -42,6 +44,7 @@ export const GET_ALL_STAFF_QUERY = gql`
     }
     materials {
       id
+      type
       title
     }
     qualities {

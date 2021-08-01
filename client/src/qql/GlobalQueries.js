@@ -11,6 +11,9 @@ export const GET_SELECTED_LISTS_QUERY = gql`
 
 export const GET_SELECTED_LISTS_ITEMS_QUERY = gql`
   query GetSelectedValues {
+    skills { ${MAIN_FIELDS} }
+    spells { ${MAIN_FIELDS} }
+    perks { ${MAIN_FIELDS} }
     items {
       id
       title

@@ -54,17 +54,10 @@ export const CORE_ITEM_FIELDS = `
   id
   title
   description
-  effects
   imgLink
   cost
   weight
-  hpBonus
-  mpBonus
   type
-  attributes { ${ATTRIBUTES_FIELDS} }
-  skills { ${MAIN_FIELDS} }
-  spells { ${MAIN_FIELDS} }
-  perks { ${MAIN_FIELDS} }
   typeProperties {
     __typename
     ... on Weapon {

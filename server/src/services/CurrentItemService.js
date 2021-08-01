@@ -5,7 +5,10 @@ exports.getCurrentItems = async () => {
     return await CurrentItem.find()
       .populate("item")
       .populate("quality")
-      .populate("material");
+      .populate("material")
+      .populate("skills")
+      .populate("spells")
+      .populate("perks");
   } catch (err) {
     throw Error(err);
   }
@@ -16,7 +19,10 @@ exports.getCurrentItem = async ({ id }) => {
     return await CurrentItem.findOne({ _id: id })
       .populate("item")
       .populate("quality")
-      .populate("material");
+      .populate("material")
+      .populate("skills")
+      .populate("spells")
+      .populate("perks");
   } catch (err) {
     throw Error(err);
   }

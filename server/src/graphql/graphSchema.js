@@ -25,8 +25,8 @@ module.exports = `
 
     input WeaponMutation {
         type: String
-        attackType: String
-        damageType: String
+        attackType: [String]
+        damageType: [String]
         baseAttack: Int
         critAttack: Int
         critHit: [Int]
@@ -39,6 +39,7 @@ module.exports = `
     input ArmorMutation {
         type: String
         baseDefense: Int
+        quickSlots: Int
     } 
 
     input AccessorMutation {
@@ -55,8 +56,8 @@ module.exports = `
         attackRange: Int
         stackSize: Int
         effect: String
-        damageType: String
-        effectType: String
+        damageType: [String]
+        effectType: [String]
     }
 
     input CharacterSkillMutation {
@@ -231,35 +232,21 @@ module.exports = `
         addItem(
             title: String
             description: String
-            effects: String
             imgLink: String
             cost: Int
             weight: Int
             type: String
             typeProperties: TypePropertiesMutation
-            hpBonus: Int
-            mpBonus: Int
-            skills: [String]
-            perks: [String]
-            spells: [String]
-            attributes: AttributesMutation
         ) : Item!
         updateItem(
             id: ID!
             title: String
             description: String
-            effects: String
             imgLink: String
             cost: Int
             weight: Int
             type: String
-            typeProperties: TypePropertiesMutation
-            hpBonus: Int
-            mpBonus: Int
-            skills: [String]
-            spells: [String]
-            perks: [String]
-            attributes: AttributesMutation
+            typeProperties: TypePropertiesMutation            
         ): Item!
         removeItem(id: ID!): Item
 
@@ -268,6 +255,12 @@ module.exports = `
             item: String
             material: String
             quality: String
+            hpBonus: Int
+            mpBonus: Int
+            skills: [String]
+            spells: [String]
+            perks: [String]
+            attributes: AttributesMutation
         ) : CurrentItem!
         updateCurrentItem(
             id: ID!,
@@ -275,6 +268,12 @@ module.exports = `
             item: String
             material: String
             quality: String
+            hpBonus: Int
+            mpBonus: Int
+            skills: [String]
+            spells: [String]
+            perks: [String]
+            attributes: AttributesMutation
         ): CurrentItem!
         removeCurrentItem(id: ID!): CurrentItem
         
@@ -525,6 +524,12 @@ module.exports = `
         item: Item
         material: Material
         quality: Quality
+        hpBonus: Int
+        mpBonus: Int
+        skills: [Skill]
+        spells: [Spell]
+        perks: [Perk]
+        attributes: Attributes
     }
 
     type Material {
@@ -550,25 +555,18 @@ module.exports = `
         id: String
         title: String
         description: String
-        effects: String
         imgLink: String
         cost: Int
         weight: Int
         type: String
-        typeProperties: TypeProperties
-        hpBonus: Int
-        mpBonus: Int
-        skills: [Skill]
-        spells: [Spell]
-        perks: [Perk]
-        attributes: Attributes
+        typeProperties: TypeProperties        
     } 
 
     type Weapon {
         itemType: String
         type: String
-        attackType: String
-        damageType: String
+        attackType: [String]
+        damageType: [String]
         baseAttack: Int
         critAttack: Int
         critHit: [Int]
@@ -582,6 +580,7 @@ module.exports = `
         itemType: String
         type: String
         baseDefense: Int
+        quickSlots: Int
     } 
 
     type Accessor {
@@ -601,7 +600,7 @@ module.exports = `
         attackRange: Int
         stackSize: Int
         effect: String
-        damageType: String
-        effectType: String
+        damageType: [String]
+        effectType: [String]
     }
 `;

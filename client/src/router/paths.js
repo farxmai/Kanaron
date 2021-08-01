@@ -13,6 +13,12 @@ export const MAIN_PATHS = {
   perk: "/perks/:id",
   items: "/items",
   item: "/items/:id",
+  itemsTypes: "/item-types",
+  itemsType: "/item-types/:id",
+  itemsMaterials: "/item-materials",
+  itemsMaterial: "/item-materials/:id",
+  itemsQualities: "/item-qualities",
+  itemsQuality: "/item-qualities/:id",
 };
 
 export const DASHBOARD_PATHS = {

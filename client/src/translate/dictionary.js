@@ -19,6 +19,16 @@ export const itemTypesTranslate = [
   { eng: "other", ru: "Другое", items: [] },
 ];
 
+export const T_MATERIAL_TYPES = {
+  metal: "Металл",
+  cloth: "Ткань",
+  leather: "Кожа",
+  wood: "Древесина",
+  mineral: "Минерал",
+  organic: "Органика",
+  other: "Другое",
+};
+
 export const T_ITEM_TYPES = {
   armor: "Снаряжение",
   weapon: "Оружие",

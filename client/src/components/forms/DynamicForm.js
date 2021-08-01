@@ -1,11 +1,5 @@
 import { CardBordered } from "../cards";
-import {
-  CustomCheckbox,
-  CustomInput,
-  CustomNunInput,
-  CustomRadio,
-  CustomSelect,
-} from "./elements";
+import { CustomCheckbox, CustomInput, CustomNunInput, CustomRadio, CustomSelect } from "./elements";
 
 const getComponentByType = (key, props) => {
   switch (key) {
@@ -23,6 +17,8 @@ const getComponentByType = (key, props) => {
       return <CustomSelect {...props} />;
     case "multiselect":
       return <CustomSelect multiple {...props} />;
+    case "color":
+      return <CustomInput type='color' {...props} />;
     default:
       return null;
   }

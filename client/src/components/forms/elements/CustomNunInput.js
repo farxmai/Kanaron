@@ -13,7 +13,7 @@ const InputWrapper = styled(Box)(() => ({
   alignItems: "center",
 }));
 
-export const CustomNunInput = ({ label, length = 2, onChange, ...rest }) => {
+export const CustomNunInput = ({ label, length = 2, onChange, value, ...rest }) => {
   const [focus, setFocus] = useState(false);
 
   const getColor = (theme) => (focus ? theme.palette.secondary.main : theme.palette.grey[500]);
@@ -39,6 +39,7 @@ export const CustomNunInput = ({ label, length = 2, onChange, ...rest }) => {
         {...rest}
         sx={{ width: getWidthByLength(length), ...rest.sx }}
         onChange={handleChange}
+        value={Array.isArray(value) ? value[0] : value}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         variant='standard'

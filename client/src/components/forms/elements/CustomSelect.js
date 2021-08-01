@@ -44,7 +44,7 @@ export const CustomSelect = ({ options = [], onChange, label, onPlus, ...props }
         onInputChange={(_, value) => setQuery(value)}
         inputValue={query}
         noOptionsText='No available'
-        renderInput={(params) => <CustomInput {...params} label={label} />}
+        renderInput={(params) => <CustomInput {...params} label={label} onChange={setQuery} />}
         PopperComponent={PaperComponent}
         renderOption={OptionWrapper}
         {...props}

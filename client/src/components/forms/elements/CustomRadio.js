@@ -10,7 +10,12 @@ export const CustomRadio = ({ label, options = [], value, onChange, ...rest }) =
       <FormLabel component='legend'>{label}</FormLabel>
       <RadioGroup value={value} onChange={handleChange}>
         {options.map((option, i) => (
-          <FormControlLabel key={i} control={<Radio />} {...option} />
+          <FormControlLabel
+            key={i}
+            control={<Radio />}
+            label={option.label || option.title}
+            value={option.value || option.id}
+          />
         ))}
       </RadioGroup>
     </FormControl>

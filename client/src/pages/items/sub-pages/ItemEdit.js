@@ -7,7 +7,7 @@ import { getDefaultState } from "helpers/getDefaultState";
 import { FormTitle } from "components/forms/elements";
 import QueryLayout from "components/layouts/QueryLayout";
 import { DeleteButtonLarge, SaveButton } from "components/buttons";
-import { DynamicForm } from "components/forms";
+import { AttributesForm, DynamicForm } from "components/forms";
 
 import {
   CREATE_ITEM_MUTATION,
@@ -24,14 +24,14 @@ const ItemEdit = ({
   items: itemsList,
   materials: materialsList,
   qualities: qualitiesList,
+  skills: skillsList,
+  spells: spellsList,
+  perks: perksList,
   setEdit,
 }) => {
   const history = useHistory();
   const id = data?.id || null;
   const [values, setValues] = useState(data || getDefaultState("currentItem"));
-  const [itemsOpen, setItemsOpen] = useState(false);
-  const [materialsOpen, setMaterialsOpen] = useState(false);
-  const [qualitiesOpen, setQualitiesOpen] = useState(false);
 
   const [mutation, { loading, error }] = useMutation(
     id ? UPDATE_ITEM_MUTATION : CREATE_ITEM_MUTATION,
@@ -53,6 +53,15 @@ const ItemEdit = ({
       [type]: value,
     });
 
+  const setAttribute = (type, value) =>
+    setValues({
+      ...values,
+      attributes: {
+        ...values.attributes,
+        [type]: value,
+      },
+    });
+
   const infoFields = [
     {
       type: "input",
@@ -64,7 +73,6 @@ const ItemEdit = ({
       field: "item",
       label: "Тип Предмета",
       options: itemsList,
-      onPlus: () => setItemsOpen(true),
     },
     {
       type: "select",
@@ -80,20 +88,41 @@ const ItemEdit = ({
     },
   ];
 
+  const bonusFields = [
+    {
+      type: "multiselect",
+      field: "skills",
+      label: "Бонусные навыки",
+      options: skillsList,
+    },
+    {
+      type: "multiselect",
+      field: "spells",
+      label: "Бонусные заклинания",
+      options: spellsList,
+    },
+    {
+      type: "multiselect",
+      field: "perks",
+      label: "Бонусные перки",
+      options: perksList,
+    },
+  ];
+
   const requestData = {
     variables: {
       ...values,
       item: values.item?.id || null,
       material: values.material?.id || null,
       quality: values.quality?.id || null,
+      skills: values.skills.map((el) => el.id),
+      spells: values.spells.map((el) => el.id),
+      perks: values.perks.map((el) => el.id),
     },
   };
 
   return (
     <Grid container spacing={1}>
-      <BaseModal open={itemsOpen} onClose={() => setItemsOpen(false)}>
-        <ItemTypeEditWrapper onCompleted={(val) => itemsList.push(val)} />
-      </BaseModal>
       <Grid item xs={12}>
         <FormTitle title={`${id ? "Редактирование" : "Создание"} Предмета`} onEdit={setEdit} />
       </Grid>
@@ -104,8 +133,16 @@ const ItemEdit = ({
           values={values}
           setValues={setCurrentValue}
         />
+        <DynamicForm
+          title='Бонусы'
+          fields={bonusFields}
+          values={values}
+          setValues={setCurrentValue}
+        />
       </Grid>
       <Grid item xs={12} md={4}>
+        <AttributesForm attributes={values.attributes} setAttribute={setAttribute} />
+
         {id && (
           <DeleteButtonLarge
             onDelete={() => remove({ variables: { id } })}

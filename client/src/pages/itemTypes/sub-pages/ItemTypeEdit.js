@@ -5,19 +5,16 @@ import { Grid } from "@material-ui/core";
 
 import { getDefaultState } from "helpers/getDefaultState";
 import { FormTitle } from "components/forms/elements";
-import QueryLayout from "components/layouts/QueryLayout";
 import { DeleteButtonLarge, SaveButton } from "components/buttons";
-import { AttributesForm, IconForm, DynamicForm } from "components/forms";
+import { DynamicForm } from "components/forms";
+import { dices } from "constants/dices";
 
 import {
   CREATE_ITEM_TYPE_MUTATION,
   DELETE_ITEM_TYPE_MUTATION,
-  GET_ITEM_TYPE_QUERY,
   UPDATE_ITEM_TYPE_MUTATION,
 } from "qql/ItemQuery";
-import { GET_SELECTED_LISTS_QUERY } from "qql/GlobalQueries";
-import { BaseModal } from "components/modals/BaseModal";
-import { dices } from "constants/dices";
+
 import {
   getAccessorTypeArray,
   getAmmoEffectsArray,
@@ -31,7 +28,7 @@ import {
   getWeaponTypeArray,
 } from "helpers/items";
 
-const ItemTypeEdit = ({ item: data, setEdit, onCompleted }) => {
+const ItemTypeEdit = ({ item: data, setEdit }) => {
   const history = useHistory();
   const id = data?.id || null;
   const [values, setValues] = useState(getDefaultState("item", data));
@@ -39,14 +36,14 @@ const ItemTypeEdit = ({ item: data, setEdit, onCompleted }) => {
   const [mutation, { loading, error }] = useMutation(
     id ? UPDATE_ITEM_TYPE_MUTATION : CREATE_ITEM_TYPE_MUTATION,
     {
-      onCompleted: ({ addItem }) => (id ? setEdit() : onCompleted(addItem)),
+      onCompleted: ({ addItem }) => (id ? setEdit() : history.push(`/item-types/${addItem.id}`)),
       onError: (err) => alert(err.message),
     }
   );
 
   const [remove, { loading: removing }] = useMutation(DELETE_ITEM_TYPE_MUTATION, {
-    // onCompleted: (res) => history.push(`/items`),
-    // onError: (err) => alert(err.message),
+    onCompleted: (res) => history.push(`/item-types`),
+    onError: (err) => alert(err.message),
   });
 
   const setCurrentValue = (type, value) =>
@@ -66,8 +63,6 @@ const ItemTypeEdit = ({ item: data, setEdit, onCompleted }) => {
         },
       },
     });
-
-  console.log(values);
 
   const infoFields = [
     {
@@ -220,17 +215,16 @@ const ItemTypeEdit = ({ item: data, setEdit, onCompleted }) => {
         length: 2,
       },
       {
-        type: "radio",
-        field: "damageType",
-        label: "Тип урона",
-        options: getWeaponDamageArray(),
-      },
-
-      {
         type: "number",
         field: "stackSize",
         label: "Стак",
         length: 3,
+      },
+      {
+        type: "multiselect",
+        field: "damageType",
+        label: "Тип урона",
+        options: getWeaponDamageArray(),
       },
       {
         type: "text",
@@ -238,9 +232,9 @@ const ItemTypeEdit = ({ item: data, setEdit, onCompleted }) => {
         label: "Дополнительный эффект",
       },
       {
-        type: "radio",
-        field: "effect",
-        label: "Дополнительное свойство",
+        type: "multiselect",
+        field: "effectType",
+        label: "Тип урона",
         options: getAmmoEffectsArray(),
       },
     ],
@@ -256,6 +250,11 @@ const ItemTypeEdit = ({ item: data, setEdit, onCompleted }) => {
           attackType: values.typeProperties.weapon.attackType.map((el) => el.id),
           damageType: values.typeProperties.weapon.damageType.map((el) => el.id),
           critHit: getCritHitsFromInt(values.typeProperties.weapon.critHit),
+        },
+        ammo: {
+          ...values.typeProperties.ammo,
+          effectType: values.typeProperties.ammo.effectType.map((el) => el.id),
+          damageType: values.typeProperties.ammo.damageType.map((el) => el.id),
         },
       },
     },
@@ -301,13 +300,4 @@ const ItemTypeEdit = ({ item: data, setEdit, onCompleted }) => {
   );
 };
 
-const ItemTypeEditWrapper = (props) => (
-  <QueryLayout
-    query={GET_SELECTED_LISTS_QUERY}
-    Component={ItemTypeEdit}
-    fetchPolicy='cache-first'
-    {...props}
-  />
-);
-
-export default ItemTypeEditWrapper;
+export default ItemTypeEdit;
