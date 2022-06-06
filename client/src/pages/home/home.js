@@ -1,9 +1,11 @@
-import { user } from "cache";
-import React from "react";
-import DiceGenerator from "../../components/dices/DiceGenerator";
+import { user } from 'cache'
+import CharacterCard from 'components/CharacterCard'
+import DiceGenerator from 'components/dices/DiceGenerator'
+import Inventory from 'components/Inventory'
+import React from 'react'
 
 const HomePage = () => {
-  console.log(user());
+  console.log(user())
   return (
     <div>
       {/* <DiceGenerator /> */}
@@ -20,8 +22,10 @@ const HomePage = () => {
       <DiceGenerator sides={8} />
       <DiceGenerator sides={6} />
       <DiceGenerator sides={4} />
+      <Inventory />
+      <CharacterCard />
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage

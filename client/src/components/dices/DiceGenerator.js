@@ -82,38 +82,34 @@ export const DiceModalWindow = ({ init = [], onClose, sides = 20 }) => {
       if (event.keyCode === 32) reRoll();
     }
     document.addEventListener("keydown", handleSpaceClick, false);
-    return () =>
-      document.removeEventListener("keydown", handleSpaceClick, false);
+    return () => document.removeEventListener("keydown", handleSpaceClick, false);
   }, [reRoll]);
 
-  const spinStyles =
-    sides === 4 || sides === 10 ? "dice-rotate-vert-center" : "dice-spin";
+  const spinStyles = sides === 4 || sides === 10 ? "dice-rotate-vert-center" : "dice-spin";
 
   return (
-    <div className="dice-block-wrapper">
-      <div className="dice-block" ref={ref}>
+    <div className='dice-block-wrapper'>
+      <div className='dice-block' ref={ref}>
         <img
           onClick={reRoll}
           className={`dice-icon ${`d${sides}`} ${loading && spinStyles}`}
           src={dices[`d${sides}`]}
-          alt=""
+          alt=''
         />
         <div className={`dice-counter ${`d${sides}-count`}`}>{counter}</div>
         {openSubs && isCrit && (
-          <div className="dice-crit-button" onClick={reRoll}>
+          <div className='dice-crit-button' onClick={reRoll}>
             Крит!
           </div>
         )}
         {openSubs && withInitial && (
-          <div className="dice-init-value-list">
+          <div className='dice-init-value-list'>
             {initial.map((el) => (
               <div key={el.value}>{`${el.value} +`}</div>
             ))}
           </div>
         )}
-        {openSubs && withInitial && (
-          <div className="dice-results">{`= ${result}`}</div>
-        )}
+        {openSubs && withInitial && <div className='dice-results'>{`= ${result}`}</div>}
       </div>
     </div>
   );
@@ -123,16 +119,33 @@ const DiceGenerator = ({ initial = [], sides = 20 }) => {
   const [open, setOpen] = useState(false);
   return (
     <>
-      {open && (
-        <DiceModalWindow
-          onClose={() => setOpen(false)}
-          init={initial}
-          sides={sides}
-        />
-      )}
+      {open && <DiceModalWindow onClose={() => setOpen(false)} init={initial} sides={sides} />}
       <button onClick={() => setOpen(true)}>{`d${sides}`}</button>
     </>
   );
 };
 
 export default DiceGenerator;
+
+let dice = (maxValInRow = 0, sides = 20) => {
+  const result = [];
+  let i = maxValInRow;
+  const getRandomInt = () => {
+    const number = i ? sides : Math.floor(Math.random() * Math.floor(sides + 1)) || 1;
+    result.push(number);
+    if (number === 1 || number === sides) {
+      i = i === 0 ? 0 : i - 1;
+      console.log(`Rolled ${number}. Crit!`);
+      return getRandomInt();
+    } else {
+      console.log(`Rolled ${number}`);
+    }
+
+    if (result.length > 1) {
+      const chance = Math.pow(sides, result.length - 1);
+      console.log(`Chance is 1/${chance}`);
+    }
+  };
+
+  return getRandomInt();
+};
