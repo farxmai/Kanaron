@@ -1,11 +1,13 @@
-import { CharacterParam } from './Character'
+import { Attribute } from './Character'
 
 export interface Skill {
   id: string
-  name: string
+  title: string
   description: string
-  baseParam: CharacterParam
-  untrained: boolean
+  baseAttribute: Attribute
+  trained: boolean
+  armorCheck: boolean
+  reference: string
 }
 
 export interface CharacterSkill {
@@ -15,6 +17,13 @@ export interface CharacterSkill {
   itemMod: number
   rank: number
   note?: string
+}
+
+export interface SkillBonus {
+  skillId: string
+  tempMod: number
+  miscMod: number
+  itemMod: number
 }
 
 export interface CharacterSkillBonus {

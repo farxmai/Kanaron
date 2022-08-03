@@ -1,0 +1,245 @@
+{
+  "id": 12,
+  "userId": 1,
+  "attributes": {
+    "str": 10,
+    "dex": 16,
+    "con": 13,
+    "int": 14,
+    "wis": 10,
+    "cha": 12
+  },
+  "name": "Fergus",
+  "age": 20,
+  "gender": "male",
+  "height": 195,
+  "weight": 90,
+  "eyes": "blue",
+  "hair": "blond",
+  "hp": {
+    "damageReduction": 0,
+    "damageNoLethal": 0,
+    "temporaryHp": 0,
+    "currentHp": 34,
+    "totalHp": 50
+  },
+  "knownSpells": {
+    "level0": [
+      {
+        "name": "string",
+        "description": "string",
+        "shortDescription": "string",
+        "school": "string",
+        "subSchool": "string",
+        "descriptor": "string",
+        "castingTime": "string",
+        "spellRange": "string",
+        "target": "string",
+        "duration": "string",
+        "savingThrow": "string",
+        "spellResistance": "string",
+        "materialComponents": "string",
+        "focusComponent": "string",
+        "reference": "string",
+        "components": {
+          "XP": true,
+          "S": true,
+          "V": true,
+          "M": true,
+          "R": true,
+          "F": true
+        }
+      }
+    ],
+    "level1": [],
+    "level2": [],
+    "level3": [],
+    "level4": [],
+    "level5": [],
+    "level6": [],
+    "level7": [],
+    "level8": [],
+    "level9": []
+  },
+  "inventory": [],
+  "equipment": {
+    "head": null,
+    "body": null,
+    "belt": null,
+    "coat": null,
+    "hands": null,
+    "foots": null,
+    "amulet1": null,
+    "amulet2": null,
+    "ring1": null,
+    "ring2": null,
+    "ring3": null,
+    "ring4": null,
+    "ring5": null,
+    "ring6": null,
+    "ring7": null,
+    "ring8": null,
+    "ring9": null,
+    "ring10": null,
+    "bag": null,
+    "artifacts": [],
+    "weapon1": {
+      "id": 45,
+      "name": "Long Bow",
+      "ammo": 22
+    },
+    "weapon2": null,
+    "weapon3": null,
+    "weapon4": null
+  },
+  "charRace": {
+    "id": 1,
+    "name": "human",
+    "description": "human is common",
+    "preferredClass": "any",
+    "attributes": {
+      "str": 0,
+      "dex": 0,
+      "con": 0,
+      "int": 0,
+      "wis": 0,
+      "cha": 0
+    },
+    "bonusFeat": 1,
+    "bonusSkills": [
+      {
+        "skillId": 35,
+        "baseMod": 2
+      },
+      {
+        "skillId": 12,
+        "baseMod": 3
+      }
+    ],
+    "size": 0,
+    "speed": 9
+  },
+  "charClasses": [
+    {
+      "lvl": 4,
+      "charClass": {
+        "id": 3,
+        "name": "Paladin",
+        "description": "Fight much, speak less",
+        "baseSkillPoints": 4,
+        "baseAttribute": "cha",
+        "diceHp": 8,
+        "lvlBonuses": [
+          {
+            "classLvl": 1,
+            "baseAttack": 1,
+            "spellsLvl_0": 0,
+            "spellsLvl_1": 0,
+            "spellsLvl_2": 0,
+            "spellsLvl_3": 0,
+            "spellsLvl_4": 0,
+            "spellsLvl_5": 0,
+            "spellsLvl_6": 0,
+            "spellsLvl_7": 0,
+            "spellsLvl_8": 0,
+            "spellsLvl_9": 0,
+            "feats_per_Lvl": 0,
+            "fortitude": 1,
+            "reflex": 1,
+            "will": 1
+          },
+          {
+            "classLvl": 2,
+            "baseAttack": 2,
+            "spellsLvl_0": 0,
+            "spellsLvl_1": 0,
+            "spellsLvl_2": 0,
+            "spellsLvl_3": 0,
+            "spellsLvl_4": 0,
+            "spellsLvl_5": 0,
+            "spellsLvl_6": 0,
+            "spellsLvl_7": 0,
+            "spellsLvl_8": 0,
+            "spellsLvl_9": 0,
+            "feats_per_Lvl": 0,
+            "fortitude": 1,
+            "reflex": 1,
+            "will": 1
+          },
+          {
+            "classLvl": 3,
+            "baseAttack": 3,
+            "spellsLvl_0": 0,
+            "spellsLvl_1": 0,
+            "spellsLvl_2": 0,
+            "spellsLvl_3": 0,
+            "spellsLvl_4": 0,
+            "spellsLvl_5": 0,
+            "spellsLvl_6": 0,
+            "spellsLvl_7": 0,
+            "spellsLvl_8": 0,
+            "spellsLvl_9": 0,
+            "feats_per_Lvl": 0,
+            "fortitude": 1,
+            "reflex": 1,
+            "will": 1
+          },
+          {
+            "classLvl": 4,
+            "baseAttack": 4,
+            "spellsLvl_0": 0,
+            "spellsLvl_1": 0,
+            "spellsLvl_2": 0,
+            "spellsLvl_3": 0,
+            "spellsLvl_4": 0,
+            "spellsLvl_5": 0,
+            "spellsLvl_6": 0,
+            "spellsLvl_7": 0,
+            "spellsLvl_8": 0,
+            "spellsLvl_9": 0,
+            "feats_per_Lvl": 0,
+            "fortitude": 1,
+            "reflex": 1,
+            "will": 1
+          },
+          {
+            "classLvl": 5,
+            "baseAttack": 5,
+            "spellsLvl_0": 0,
+            "spellsLvl_1": 0,
+            "spellsLvl_2": 0,
+            "spellsLvl_3": 0,
+            "spellsLvl_4": 0,
+            "spellsLvl_5": 0,
+            "spellsLvl_6": 0,
+            "spellsLvl_7": 0,
+            "spellsLvl_8": 0,
+            "spellsLvl_9": 0,
+            "feats_per_Lvl": 0,
+            "fortitude": 1,
+            "reflex": 1,
+            "will": 1
+          },
+          {
+            "classLvl": 6,
+            "baseAttack": 6,
+            "spellsLvl_0": 0,
+            "spellsLvl_1": 0,
+            "spellsLvl_2": 0,
+            "spellsLvl_3": 0,
+            "spellsLvl_4": 0,
+            "spellsLvl_5": 0,
+            "spellsLvl_6": 0,
+            "spellsLvl_7": 0,
+            "spellsLvl_8": 0,
+            "spellsLvl_9": 0,
+            "feats_per_Lvl": 0,
+            "fortitude": 1,
+            "reflex": 1,
+            "will": 1
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,18 +1,10 @@
 import { CharacterSkillBonus } from './Skills'
 
-export type CharacterParam = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
+export type Attribute = 'str' | 'dex' | 'con' | 'int' | 'wis' | 'cha'
 export type CharacterSize = 'small' | 'medium' | 'large'
+export type SavingThrow = 'fortitude' | 'reflex' | 'will'
 
-export interface CharacterHitPoints {
-  damageReduction: number
-  damageNoLethal: number
-  temporaryHp: number
-  currentHp: number
-  totalHp: number
-  diceHp: number
-}
-
-export interface CharacterParams {
+export interface Attributes {
   str: number
   dex: number
   con: number
@@ -21,7 +13,7 @@ export interface CharacterParams {
   cha: number
 }
 
-export interface SpellLevels {
+export interface SpellPerLevel {
   0: number
   1: number
   2: number
@@ -34,38 +26,64 @@ export interface SpellLevels {
   9: number
 }
 
-export interface CharacterRace {
-  name: string
-  description: string
-  preferredClass: string
-  bonusParams: CharacterParams
-  bonusSkills: CharacterSkillBonus[]
-  size: CharacterSize
-  speed: number
-}
-
 export interface SavingThrows {
   fortitude: number
   reflex: number
   will: number
 }
 
-export interface Ability {
+export interface Feat {
   name: string
   description: string
+  type: string
+  multiple: boolean
+  stackable: boolean
+  choiceTarget: string
+  prerequisite: string
+  withFeat: string
+  withoutFeat: string
+  reference: string
+}
+
+export interface Skill {
+  name: string
+  description: string
+  baseAttribute: Attribute
 }
 
 export interface Spell {
   name: string
   description: string
+  shortDescription: string
+  school: string
+  subSchool: string | null
+  descriptor: string | null
+  castingTime: string
+  spellRange: string
+  target: string
+  duration: string
+  savingThrow: SavingThrow
+  spellResistance: string
+  materialComponents: string
+  focusComponent: string
+  reference: string
+  components: {
+    XP: boolean
+    S: boolean
+    V: boolean
+    M: boolean
+    R: boolean
+    F: boolean
+  }
 }
 
 export interface ClassLvlBonuses {
+  classId: string
+  classLvl: number // uniq
   baseAttack: number
   savingThrows: SavingThrows
-  spellLevels?: SpellLevels
-  abilities?: Ability[]
-  spells?: Spell[]
+  spellPerLvl?: SpellPerLevel
+  feats_: Feat[]
 }
 
 export interface CharacterClass {
@@ -73,6 +91,8 @@ export interface CharacterClass {
   name: string
   description: string
   baseSkillPoints: number
+  baseAttribute: Attribute
+  diceHp: number
   lvlBonuses: {
     1: ClassLvlBonuses
     2: ClassLvlBonuses
@@ -97,16 +117,45 @@ export interface CharacterClass {
   }
 }
 
-export interface PlayerClass {
+export interface CharacterRace {
+  id: string
+  name: string
+  description: string
+  preferredClass: string
+  attributes: Attributes
+  savingThrows: SavingThrows
+  bonusSkills: CharacterSkillBonus[]
+  size: CharacterSize
+  speed: number
+}
+
+export interface DirectCharacterClass {
+  characterId: string
   classId: string
   lvl: number
 }
 
 export interface Character {
-  lvl: number
-  name: 'string'
-  hp: CharacterHitPoints
-  charParams: CharacterParams
+  userId: string
+  id: string
+  str: number
+  dex: number
+  con: number
+  int: number
+  wis: number
+  cha: number
+  name: string
+  age: number
+  gender: string
+  height: number
+  weight: number
+  eyes: string
+  hair: string
+  damageReduction: number
+  damageNoLethal: number
+  temporaryHp: number
+  currentHp: number
+  totalHp: number
   charRace: CharacterRace
-  charClass: [PlayerClass]
+  charClass: DirectCharacterClass[]
 }
